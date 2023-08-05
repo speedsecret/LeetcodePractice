@@ -14,31 +14,35 @@ Explanation: The array cannot be partitioned into equal sum subsets.
 */
 
 class Solution {
-  public boolean canPartition(int[] nums) {
-    if (nums == null || nums.length < 2) {
-      return false;
-    }
-    int sum = 0;
-    for (int num: nums) {
-      sum += num;
-    }
-    if (sum % 2 != 0) {
-      return false;
-    }
-    // Use DP
-    boolean[] dp = new boolean[sum + 1];
-    for (int num: nums) {
-      for (int i = sum; i >= 0; i--) {
-        if (dp[i]) {
-          dp[i + num] = true;
+    public boolean canPartition(int[] nums) {
+        if (nums == null || nums.length < 2) {
+            return false;
         }
-      }
-      if (dp[sum / 2]) {
-        return true;
-      }
+        //calculate all of elements in the nums array;
+        //check if it is odd -> return false;
+        //then recursively find if we can find two list are equals
+        int sum = 0;
+        for (int num: nums) {
+            sum += num;
+        }
+        if (sum % 2 != 0) {
+            return false;
+        }
+        // Use DP
+        boolean[] dp = new boolean[sum + 1];
+        dp[0] = true;
+        for (int num: nums) {
+            for (int i = sum; i >= 0; i--) {
+                if (dp[i]) {
+                    dp[i + num] = true;
+                }
+            }
+            if (dp[sum / 2]) {
+                return true;
+            }
+        }
+        return false;
     }
-    return false;
-  }
   
   public static void main(String[] args) {
         Solution solution = new Solution();
