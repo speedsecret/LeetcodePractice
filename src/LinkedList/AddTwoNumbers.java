@@ -25,7 +25,7 @@ public class AddTwoNumbers {
             }
             cur.next = new ListNode(val % 10);
             val /= 10;
-            // don't forget this one as it is critical!
+            // don't forget this one as if cur ListNode not moving forward, you would stuck in an infinite loop.
             cur = cur.next;
         }
         return dummy.next;
