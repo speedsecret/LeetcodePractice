@@ -1,4 +1,5 @@
 /*
+Leetcode 416:https://leetcode.com/problems/partition-equal-subset-sum/submissions/
 Given an integer array nums, return true if you can partition the array into two subsets such that 
 the sum of the elements in both subsets is equal or false otherwise.
 
@@ -15,23 +16,29 @@ Explanation: The array cannot be partitioned into equal sum subsets.
 
 class Solution {
     public boolean canPartition(int[] nums) {
-        if (nums == null || nums.length < 2) {
+        // use dp from the top to the bottom
+        // check if the sum can be divided to two same equal amount
+        // if the sum is odd, then we just return false;
+        if (nums.length < 2) {
             return false;
         }
-        //calculate all of elements in the nums array;
-        //check if it is odd -> return false;
-        //then recursively find if we can find two list are equals
+
         int sum = 0;
-        for (int num: nums) {
-            sum += num;
+        for (int ele : nums) {
+            sum += ele;
         }
         if (sum % 2 != 0) {
             return false;
         }
-        // Use DP
+
+        // build up an dp array
+        // the size of the array is the sum
         boolean[] dp = new boolean[sum + 1];
+        // it is always true you can create two equal array, which only contain 0 in it.
         dp[0] = true;
-        for (int num: nums) {
+        // loop the array again
+        for (int num : nums) {
+            // start from the top to the bottom.
             for (int i = sum; i >= 0; i--) {
                 if (dp[i]) {
                     dp[i + num] = true;
@@ -43,6 +50,7 @@ class Solution {
         }
         return false;
     }
+}
   
   public static void main(String[] args) {
         Solution solution = new Solution();
