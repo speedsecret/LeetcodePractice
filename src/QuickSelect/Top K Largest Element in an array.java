@@ -58,29 +58,34 @@ class Solution {
     }
 
     private int quickSelect(List<Integer> list, int k) {
+        // step1: find the pivotIndex
         int pivotIndex = new Random().nextInt(list.size());
         int pivot = list.get(pivotIndex);
-
+        
+        // step2: create lists and parse the lists
         List<Integer> left = new ArrayList<>();
         List<Integer> mid = new ArrayList<>();
         List<Integer> right = new ArrayList<>();
-
-        for (int num : list) {
-            if (num > pivot) {
-                left.add(num);
-            } else if (num < pivot) {
-                right.add(num);
+        
+        // parsing elements into the lists.
+        for (int ele : list) {
+            if (ele > pivot) {
+                left.add(ele);
+            } else if (ele == pivot) {
+                mid.add(ele);
             } else {
-                mid.add(num);
+                right.add(ele);
             }
         }
 
+        // step3: determine which recursion it would go to
         if (left.size() >= k) {
             return quickSelect(left, k);
-        } else if (mid.size() + left.size() < k) {
-            return quickSelect(right, k - mid.size() - left.size());
+        } else if (left.size() + mid.size() < k) {
+            return quickSelect(right, k - (left.size() + mid.size()));
+        } else {
+            return pivot;
         }
-        return pivot;
     }
 }
 
