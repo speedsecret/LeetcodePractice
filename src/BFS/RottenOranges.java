@@ -24,24 +24,14 @@ class Solution {
         }
         int row = grid.length;
         int col = grid[0].length;
-        if (row == 1 && col == 1 && grid[0][0] == 0 || grid[0][0] == -1) {
-            return 0;
-        }
-        if (row == 1 && col == 4 && grid[0][0] == 0 && grid[0][1] == 0 && grid[0][2] == 0 && grid[0][3] == 0) {
-            return 0;
-        }
         boolean[][] visited = new boolean[row][col];
         Deque<int[]> queue = new ArrayDeque<>();
-        int step = -1;
-        int freshOranges = 0;
+        int step = 0;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (grid[i][j] == 2) {
                     visited[i][j] = true;
                     queue.addFirst(new int[]{i, j});
-                }
-                if (grid[i][j] == 1) {
-                    freshOranges++;
                 }
             }
         }
@@ -56,11 +46,13 @@ class Solution {
                     int neiCol = curCol + dir[1];
                     if (neiRow >= 0 && neiRow < row && neiCol >= 0 && neiCol < col && !visited[neiRow][neiCol] && grid[neiRow][neiCol] == 1) {
                         visited[neiRow][neiCol] = true;
-                        freshOranges--;
                         grid[neiRow][neiCol] = 2;
                         queue.addFirst(new int[]{neiRow, neiCol});
                     }
                 }
+            }
+            if (queue.isEmpty()) {
+                break;
             }
             step++;
         }
@@ -71,6 +63,6 @@ class Solution {
                 }
             }
         }
-        return freshOranges == 0 ? step : -1;
+        return step;
     }
 }
