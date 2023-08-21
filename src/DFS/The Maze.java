@@ -24,10 +24,11 @@ class Solution {
     }
 
     private boolean DFS(int[][] maze, int row, int col, int[] destination, boolean[][] visited) {
-        // base case
+        // base case 1 --> return false
         if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length || maze[row][col] == 1 || visited[row][col]) {
             return false;
         }
+        // base case 2 which means we can reach out to the dest --> return true
         if (row == destination[0] && col == destination[1]) {
             return true;
         }
