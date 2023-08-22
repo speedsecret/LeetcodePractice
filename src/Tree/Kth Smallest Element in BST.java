@@ -28,6 +28,9 @@ Output: 3
  * }
  */
 
+// Method
+// Find the first k elements by traversing the Binary Search Tree.
+
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
         // Method1: Use two int[] arrs ans and count, find out elements.
