@@ -28,8 +28,12 @@ Output: [3,2,1,4,5]
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+
+
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
+
+        // Method 1:
         // step1: create a list, and add every K group listNode head into the list
         // step2: reverse each list seperately, and taking care of the last list(as the last list may not have enough elements, so we just continue so to leave it as it is)
         // step3: connect with elements together then return the first head of the list
@@ -87,5 +91,36 @@ class Solution {
             head = next;
         }
         return prev;
+    }
+
+    // Method 2: Not using a List to store all heads of the linkedList Nodes
+    public ListNode reverseKGroup_v2(ListNode head, int k) {
+        if(head == null||head.next == null) 
+            return head;
+        ListNode temp = head;
+        int length = 0;
+        while(temp != null)
+        {
+            length++;
+            temp=temp.next;
+        }
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        ListNode pre = dummyHead;
+        ListNode cur;
+        ListNode nex;
+        while(length >= k) {
+            cur = pre.next;
+            nex = cur.next;
+            for(int i=1;i<k;i++) {
+                cur.next = nex.next;
+                nex.next = pre.next;
+                pre.next = nex;
+                nex = cur.next;
+            }
+            pre = cur;
+            length = length - k;
+        }
+        return dummyHead.next;
     }
 }
