@@ -49,6 +49,8 @@ class Solution {
         // 2. how to fill the newly built-up matrix
         // the code is complicated, it easier to make mistakes when filling the matrix
 
+
+        // Important to add this edge case check, otherwise, it would generate memory limit exceed.
         if (numRows == 1) {
             return s;
         }
