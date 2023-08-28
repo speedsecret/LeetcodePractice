@@ -46,6 +46,7 @@ class Solution {
             int count = 0;
             
             // Count the occurrences of the current character
+            // Remembered to compare with the reference currentChar instead of chars[slow];
             while (fast < chars.length && chars[fast] == currentChar) {
                 fast++;
                 count++;
