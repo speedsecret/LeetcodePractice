@@ -23,12 +23,21 @@ Constraints:
 -107 <= k <= 107
 */
 
+// Method: PrefixSum
+// if sum[i] - sum[j] == 0
+// Represents the elements in between i and j are zero
+// if sum[i] - sum[j] == k
+// Represents the elements in between i and j are k
+
+// Use two int variables: counter and prefixSum
+// Use a hashMap to store all prefixSum and its duplicated times in it
+// update the prefixSum when we traversing the arr, also, checking if the *prefixSum - k* has been stored 
+// in the hashMap
+// if so, adding the corresponding duplicated times into the counter as the final return result.
+// keep adding/updating the current prefixSum into the hashMap
+
 class Solution {
     public int subarraySum(int[] nums, int k) {
-        // if sum[i] - sum[j] == 0
-        // which represent the elements in between i and j are zero
-        // if sum[i] - sum[j] == k
-        // wihch represent the elemtns in between i and j are k
         // use this feature to build up an hashMap
         Map<Integer, Integer> map = new HashMap<>();
         map.put(0, 1);
