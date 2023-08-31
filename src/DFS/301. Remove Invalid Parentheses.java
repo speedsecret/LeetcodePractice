@@ -67,8 +67,10 @@ class Solution {
         
         // Step 3: Explore all possible combinations after removing parentheses
         for (int i = start; i < s.length(); ++i) {
+            // Skip duplicates to avoid duplicates in result
+            // However, work on the first character when we met consecutive characters.
             if (i != start && s.charAt(i) == s.charAt(i - 1)) {
-                continue; // Skip duplicates to avoid duplicates in result
+                continue; 
             }
             
             // skip it when the char is smallcase letter
