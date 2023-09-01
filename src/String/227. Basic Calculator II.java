@@ -26,6 +26,14 @@ Example 3:
 Input: s = " 3+5 / 2 "
 Output: 5
 */
+// Methodology
+// Use three int variables: currentNumber, LastNumber, result
+// There are few types of chars
+// current char is digit, update the currentNumber
+// current char is '+', adding the lastNumber into the result, update the lastNumber as currentNumber
+// current char is '-', adding the lastNumber into the result, update the lastNumber as -currentNumber;
+// current char is '*', lastNumber *= currentNumber
+// current char is '/', lastNumber /= currentNumber
 
 class Solution {
     public int calculate(String s) {
@@ -40,7 +48,8 @@ class Solution {
             if (Character.isDigit(currentChar)) {
                 currentNumber = currentNumber * 10 + currentChar - '0';
             }
-            if (!Character.isDigit(currentChar) && !Character.isWhitespace(currentChar) || i == length - 1) {
+            // in this case, when the last char is digit, it would enter this if condition too!
+            if ((!Character.isDigit(c) && !Character.isWhitespace(c)) || i == s.length() - 1) {
                 if (operation == '+' || operation == '-') {
                     result += lastNumber;
                     lastNumber = (operation == '+') ? currentNumber : -currentNumber;
