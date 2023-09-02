@@ -15,7 +15,24 @@ Output: 12
 
 class Solution {
     public int minPathSum(int[][] grid) {
-        // Method 1: use DP with an extra size n * n matrix then traverse from bottom right to top left iteratively
+
+        // [Preferred]Method 1: use current matrix not taking extra space.
+        int m = grid.length, n = grid[0].length;
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (i == m - 1 && j != n - 1) {
+                    grid[i][j] = grid[i][j] + grid[i][j + 1];
+                } else if (i != m - 1 && j == n - 1) {
+                    grid[i][j] = grid[i][j] + grid[i + 1][j];
+                } else if (i != m - 1 && j != n - 1) {
+                    grid[i][j] = grid[i][j] + Math.min(grid[i + 1][j], grid[i][j + 1]);
+                }
+            }
+        }
+        return grid[0][0];
+
+        /*
+        // Method 2: use DP with an extra size n * n matrix and traverse from bottom right to top left iteratively
         int m = grid.length, n = grid[0].length;
         // actually there are 4 different position that applys to different DP strategies.
         // starting point
@@ -44,22 +61,6 @@ class Solution {
             }
         }
         return dp[0][0];
-
-        // Method 2: use current matrix not taking extra space.
-        /*
-        public int minPathSum(int[][] grid) {
-            for (int i = grid.length - 1; i >= 0; i--) {
-                for (int j = grid[0].length - 1; j >= 0; j--) {
-                    if(i == grid.length - 1 && j != grid[0].length - 1)
-                        grid[i][j] = grid[i][j] +  grid[i][j + 1];
-                    else if(j == grid[0].length - 1 && i != grid.length - 1)
-                        grid[i][j] = grid[i][j] + grid[i + 1][j];
-                    else if(j != grid[0].length - 1 && i != grid.length - 1)
-                        grid[i][j] = grid[i][j] + Math.min(grid[i + 1][j],grid[i][j + 1]);
-                }
-            }
-            return grid[0][0];
-        }
         */
     }
 }
