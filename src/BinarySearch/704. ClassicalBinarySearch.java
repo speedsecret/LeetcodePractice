@@ -1,6 +1,9 @@
 package BinarySearch;
 
 /*
+704. ClassicalBinarySearch
+https://leetcode.com/problems/binary-search/
+
 Given an array, which has been sorted, then given a target as well
 find the target, return an index
  */
