@@ -20,6 +20,13 @@ To take course 1 you should have finished course 0, and to take course 0 you
 should also have finished course 1. So it is impossible.
 */
 
+// Methodology:
+// construct adjList, understand what are the referencing relationship
+// inDegree arr, record how many other courses pointed to this current course
+// use BFS to maintain a queue dynamically
+// int visited to check how many courses we have visited so far
+// finally need to compare visited with numCourses at the end.
+
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         // step1: setting up adjacent list, from pre --> cur
