@@ -118,3 +118,57 @@ class Trie {
  * boolean param_2 = obj.search(word);
  * boolean param_3 = obj.startsWith(prefix);
  */
+
+/*
+Actually there is another version of code that you can save a lot of code is under:
+
+class Trie {
+    class TrieNode {
+        TrieNode[] children;
+        boolean isEnd;
+        public TrieNode() {
+            children = new TrieNode[26];
+        }
+    }
+
+    private TrieNode root;
+
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    public void insert(String word) {
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            if (node.children[ch - 'a'] == null) {
+                node.children[ch - 'a'] = new TrieNode();
+            }
+            node = node.children[ch - 'a'];
+        }
+        node.isEnd = true;
+    }
+    
+    public boolean search(String word) {
+        TrieNode node = searchPrefix(word);
+        return node != null && node.isEnd;
+    }
+    
+    public boolean startsWith(String prefix) {
+        TrieNode node = searchPrefix(prefix);
+        return node != null;
+    }
+
+    private TrieNode searchPrefix(String word) {
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            if (node.children[ch - 'a'] == null) {
+                return null;
+            }
+            node = node.children[ch - 'a'];
+        }
+        return node;
+    }
+}
+*/
