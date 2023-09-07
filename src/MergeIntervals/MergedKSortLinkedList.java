@@ -34,6 +34,9 @@ public class MergedKSortLinkedList {
         return dummy.next;
     }
 
+    // T: O(Nlogk)
+    // S: O(n + k) O(n) means creating a new linked list costs O(n) space.
+
     public static void main(String[] args) {
         List<ListNode> res = new ArrayList<>();
         ListNode listNode1 = new ListNode(1);
