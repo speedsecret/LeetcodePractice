@@ -1,4 +1,6 @@
 /*
+208. Implement a Trie
+https://leetcode.com/problems/implement-trie-prefix-tree/description/
 Absolutely, let's break down the relationship between `Trie` and `TrieNode` to clarify their roles in the implementation of a Trie data structure.
 
 1. **TrieNode:**
@@ -122,15 +124,15 @@ class Trie {
 /*
 Actually there is another version of code that you can save a lot of code is under:
 
-class Trie {
-    class TrieNode {
-        TrieNode[] children;
-        boolean isEnd;
-        public TrieNode() {
-            children = new TrieNode[26];
-        }
+class TrieNode {
+    TrieNode[] children;
+    boolean isEnd;
+    public TrieNode() {
+        children = new TrieNode[26];
     }
+}
 
+class Trie {
     private TrieNode root;
 
     public Trie() {
