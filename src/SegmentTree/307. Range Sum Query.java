@@ -40,6 +40,9 @@ At most 3 * 104 calls will be made to update and sumRange.
 */
 
 class SegmentTreeNode {
+    // note down the start Index and end Index
+    // left subTreeNode and right subTreeNode
+    // sum 
     int start, end;
     SegmentTreeNode left, right;
     int sum;
@@ -63,21 +66,28 @@ public class NumArray {
 
     // Helper function to build the segment tree
     private SegmentTreeNode buildTree(int[] nums, int start, int end) {
+        // base case:
         if (start > end) {
             return null;
-        } else {
-            SegmentTreeNode newNode = new SegmentTreeNode(start, end);
-            if (start == end) {
-                newNode.sum = nums[start];
-            } else {
-                // calculate two sides separately
-                int mid = start + (end - start) / 2;             
-                newNode.left = buildTree(nums, start, mid);
-                newNode.right = buildTree(nums, mid + 1, end);
-                newNode.sum = newNode.left.sum + newNode.right.sum;
-            }         
-            return newNode;
         }
+
+        // recursive rule:
+        SegmentTreeNode newNode = new SegmentTreeNode(start, end);
+        // case 1: child node
+        if (start == end) {
+            newNode.sum = nums[start];
+        } 
+        // case 2: have subtreeNodes
+        else {
+            // calculate two sides separately
+            int mid = start + (end - start) / 2; 
+            // recursively to construct the left subTree            
+            newNode.left = buildTree(nums, start, mid);
+            // recursively to construct the right subTree;
+            newNode.right = buildTree(nums, mid + 1, end);
+            newNode.sum = newNode.left.sum + newNode.right.sum;
+        }         
+        return newNode;
     }
    
     // Update a value in the array and the segment tree
@@ -92,10 +102,13 @@ public class NumArray {
             root.sum = val;
         } else {
             int mid = root.start + (root.end - root.start) / 2;
+            // case1: pos <= mid;
             if (pos <= mid) {
                 // Recursively update the left subtree
                 update(root.left, pos, val);
-            } else {
+            } 
+            // case2: pos > mid;
+            else {
                 // Recursively update the right subtree
                 update(root.right, pos, val);
             }
@@ -115,14 +128,20 @@ public class NumArray {
             // If the current node's range matches the query range, return its sum
             return root.sum;
         } else {
+            // the starting root is the real root, which means it begin from 0 to nums.length - 1;
             int mid = root.start + (root.end - root.start) / 2;
+            // case 1: it is only related to left subTree;
             if (end <= mid) {
                 // Query lies entirely in the left subtree
                 return sumRange(root.left, start, end);
-            } else if (start >= mid+1) {
+            } 
+            // case 2: it is only related to right subTree;
+            else if (start >= mid+1) {
                 // Query lies entirely in the right subtree
                 return sumRange(root.right, start, end);
-            }  else {    
+            }  
+            // case 3: it occupied the left parts as well as the right parts.
+            else {    
                 // Query spans both left and right subtrees
                 return sumRange(root.right, mid+1, end) + sumRange(root.left, start, mid);
             }
