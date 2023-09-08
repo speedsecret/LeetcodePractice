@@ -18,31 +18,33 @@ There are two ways to reach the bottom-right corner:
 
 class Solution {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        // Attention please:
-        // 1 is obstacle
-        // 0 is okay
         if (obstacleGrid[0][0] == 1) {
             return 0;
         }
-        obstacleGrid[0][0] = 1;
         int row = obstacleGrid.length;
         int col = obstacleGrid[0].length;
+        
+        // update the current matrix into path number based, instead of obstacles based.
+        obstacleGrid[0][0] = 1;
+        // for the row
         for (int i = 1; i < row; i++) {
-            // equals to 1 here represent the previous path is workable, instead of a obstacle!
-            // which means when previous path works plus the current one is not an obstacle, then we mark the current path as a workable solution.
+            // 如果前一个位置是通路，且本位置是space，表示存在一条路径从左侧到达当前位置。
             obstacleGrid[i][0] = (obstacleGrid[i - 1][0] == 1 && obstacleGrid[i][0] == 0) ? 1 : 0;
         }
+        // similiarly, it is col check
         for (int i = 1; i < col; i++) {
             obstacleGrid[0][i] = (obstacleGrid[0][i - 1] == 1 && obstacleGrid[0][i] == 0) ? 1 : 0;
         }
 
+        // logic for the non edge col or edge row
         for (int i = 1; i < row; i++) {
             for (int j = 1; j < col; j++) {
-                // Case1: this is a workable spot in any of the workable solutions, check the relevant paths.
+                // case1: if they have been marked as workable path, adding two neighbors together
+                // this is exactly the same as the Unique Path I
                 if (obstacleGrid[i][j] == 0) {
-                    obstacleGrid[i][j] = obstacleGrid[i][j - 1] + obstacleGrid[i - 1][j];
+                    obstacleGrid[i][j] = obstacleGrid[i - 1][j] + obstacleGrid[i][j - 1];
                 } 
-                // Case2: this isn't work, but we need to reinforced that this should equal to 0.
+                // case2: if the current spot is an obstacle, then we should mark it as an obstacle.
                 else {
                     obstacleGrid[i][j] = 0;
                 }
