@@ -45,7 +45,8 @@ All integers in arr are unique (i.e. arr is a permutation of the integers from 1
 // we can always swap twice to make any elements to the any target position.
 // Started from the largest element to 1:
 // -check if the element is currently in the right position
-// -if not --> do the first swap then second swap, add two swaps into the final results on the fly.
+// -if not --> add the first swap to the final result, then do the first swap(index from 0 to pos) 
+//             then second swap(index from 0 to i - 1), add two swaps into the final results on the fly.
 // -if yes --> continue for the next element
 
 import java.util.ArrayList;
