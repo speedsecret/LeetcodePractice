@@ -20,6 +20,17 @@ Input: nums = [2,2,2,2,2], target = 8
 Output: [[2,2,2,2]]
 */
 
+// Methodology:
+// Actually treat this problem as a k sum
+// the terminal conditions are two:
+// 1. if the start == nums.length;
+// 2. if we knew the first element in the array is larger then the average of k elements, or the last element in the current
+// array is smaller than the average of k elements
+// 3. if the k == 2---> return traditional 2SUM.
+
+// recursive rule:
+// for each subproblem(target = target - nums[i], k = k - 1)
+// we traveres the List<List<Integer>> res, and add them into the currentRes.
 
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
