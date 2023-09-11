@@ -1,4 +1,5 @@
 /*
+215.Top K Largest Element in an array
 https://leetcode.com/problems/kth-largest-element-in-an-array/description/
 
 Given an integer array nums and an integer k, return the kth largest element in the array.
@@ -57,6 +58,8 @@ class Solution {
         return quickSelect(list, k);
     }
 
+    
+
     private int quickSelect(List<Integer> list, int k) {
         // step1: find the pivotIndex
         int pivotIndex = new Random().nextInt(list.size());
@@ -79,9 +82,15 @@ class Solution {
         }
 
         // step3: determine which recursion it would go to
+        // Anything contained in the left list, is larger to pivot, if their size is larger or equals to k
+        // they must contain all k Largest element
+
+        // we safely discard the mid list and the right list.
         if (left.size() >= k) {
             return quickSelect(left, k);
-        } else if (left.size() + mid.size() < k) {
+        } 
+        // we safely discard the left and mid lists, decrease the scope to k - mid.size() - left.size();
+        else if (left.size() + mid.size() < k) {
             return quickSelect(right, k - (left.size() + mid.size()));
         } else {
             return pivot;
