@@ -36,28 +36,25 @@ The number of nodes in the tree is in the range [0, 105].
  */
 
 // Methodology:
-// DFS to traverse the Tree recurrsively,
-// need to handle the case when one side of the tree is empty.
+// Minimum Depth, which means one has to find the minimum depth of either left or right subTree
+// terminal condition is:
+// root == null ---> return 0;
+// root.left == null --> return rightMinDepth;
+// root.right == null --> return leftMinDepth;
 
+// recursive rule:
+// the key is to return the Math.min(leftMinDepth, rightMinDepth) + 1;
 class Solution {
     public int minDepth(TreeNode root) {
         if (root == null) {
             return 0;
         }
-
-        // handle when the one side is empty
         if (root.left == null) {
             return minDepth(root.right) + 1;
         }
-
         if (root.right == null) {
             return minDepth(root.left) + 1;
         }
-
-        // for tree have both subLeftTree and subRightTree
-        int leftMinDepth = minDepth(root.left);
-        int rightMinDepth = minDepth(root.right);
-
-        return Math.min(leftMinDepth, rightMinDepth) + 1;
+        return Math.min(minDepth(root.left), minDepth(root.right)) + 1;
     }
 }
