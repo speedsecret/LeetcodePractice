@@ -44,58 +44,64 @@ class Solution {
             minHeap.add(num);
         }
         return minHeap.poll();
-
         */
-        // Method 2: Ues quick Select
-        // recursively call the quick select function and confidently drop impossible parts, decrease the length
-        // step1: pick a pivot randomly
-        // step2: create three lists and loop the original list
-        // step3: determine which quickselect sub-call needs to be called in and return it accordingly.
-        List<Integer> list = new ArrayList<>();
-        for (int num :  nums) {
-            list.add(num);
-        }
+
+        // Method 2: quickSelect
+        // Methodology:
+        // Using quickSelect, each time to randomly choose a index, then loop the element in current list
+        // construct with 3 lists, larger, same, and smaller
+        // Put larger elements to larger list, 
+        // put equal element to same list
+        // put smaller elements to smaller list
+        List<Integer> list = Arrays.stream(nums)
+                                    .boxed()
+                                    .collect(Collectors.toList());
         return quickSelect(list, k);
     }
 
-    
-
     private int quickSelect(List<Integer> list, int k) {
-        // step1: find the pivotIndex
         int pivotIndex = new Random().nextInt(list.size());
         int pivot = list.get(pivotIndex);
         
-        // step2: create lists and parse the lists
-        List<Integer> left = new ArrayList<>();
-        List<Integer> mid = new ArrayList<>();
-        List<Integer> right = new ArrayList<>();
-        
-        // parsing elements into the lists.
+        // construct 3 lists
+        List<Integer> smallerList = new ArrayList<>();
+        List<Integer> sameList = new ArrayList<>();
+        List<Integer> largerList = new ArrayList<>();
+
         for (int ele : list) {
-            if (ele > pivot) {
-                left.add(ele);
-            } else if (ele == pivot) {
-                mid.add(ele);
+            if (ele < pivot) {
+                smallerList.add(ele);
+            } else if (ele > pivot) {
+                largerList.add(ele);
             } else {
-                right.add(ele);
+                sameList.add(ele);
             }
         }
 
-        // step3: determine which recursion it would go to
-        // Anything contained in the left list, is larger to pivot, if their size is larger or equals to k
-        // they must contain all k Largest element
-
-        // we safely discard the mid list and the right list.
-        if (left.size() >= k) {
-            return quickSelect(left, k);
+        */
+        // recursive rule:
+        // focus on largerList then sameList then smallerList, because we would like to find kth Largest element.
+        // Recursion:
+        // If the left list's size is greater than or equal to k, it means that the kth largest element must be in the left list because all elements in it are larger than 
+        // the pivot. 
+        // So, it recursively calls quickSelect(left, k) to find the kth largest element in the left list.
+        // If the left list's size plus the mid list's size is less than k, it means that the kth largest element is in the right list. 
+        // We adjust k by subtracting the sizes of left and mid lists from it because we have already determined that these elements are not part of the kth largest. 
+        // So, we recursively call quickSelect(right, k - (left.size() + mid.size())) to find the kth largest element in the right list.
+        // If neither of the above conditions is met, it means that k falls within the mid list. In this case, we return the pivot because we've found the kth largest element, 
+        // which is the pivot itself.
+        */
+        // case1:
+        if (largerList.size() >= k) {
+            return quickSelect(largerList, k);
+        }
+        // case 2:
+        if (largerList.size() + sameList.size() < k) {
+            return quickSelect(smallerList, k - largerList.size() - sameList.size());
         } 
-        // we safely discard the left and mid lists, decrease the scope to k - mid.size() - left.size();
-        else if (left.size() + mid.size() < k) {
-            return quickSelect(right, k - (left.size() + mid.size()));
-        } else {
-            return pivot;
+        // case 3:
+        else {
+            return sameList.get(0);
         }
     }
-}
-
-  
+}  
