@@ -1,5 +1,5 @@
 /*
-352. Data Stream as Disjoint Intervals
+Question: 352. Data Stream as Disjoint Intervals
 https://leetcode.com/problems/data-stream-as-disjoint-intervals/
 
 Given a data stream input of non-negative integers a1, a2, ..., an, summarize the numbers seen so far as a list of disjoint intervals.
@@ -41,6 +41,9 @@ At most 102 calls will be made to getIntervals.
 
 Follow up: What if there are lots of merges and the number of disjoint intervals is small compared to the size of the data stream?
 */
+
+// Clarification in one sentence:
+// Design a API that support addNum and getIntervals when inputs is a stream.
 
 // Methodology:
 // Using a Treeset to store elements that we had previously required to get added.
