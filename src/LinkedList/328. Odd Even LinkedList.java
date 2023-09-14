@@ -35,6 +35,13 @@ The number of nodes in the linked list is in the range [0, 104].
 // then we can adjust the head linkedList from left to right
 // use a int variable counter, once we process one linkedList, then increment one more levels
 
+// thoughts:
+// like the question 86 partition list
+// https://leetcode.com/problems/partition-list/
+// use two dummyNodes and their copies
+// the only diff is we might need to use an int variable counter
+// to determine whether it is odd or even.
+
 class Solution {
     public ListNode oddEvenList(ListNode head) {
         // To loop head twice as I guess
