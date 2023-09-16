@@ -26,6 +26,7 @@ class Solution {
         // I thought I can just process the edges matrix and check how many indegree equals to 0 that we have, which is the answer, however it is incorrect.
 
         // Correct approach is we can actually construct an adj list
+        // Perform a DFS solution
         // then process from [0, n) then to find how many independent graph we had
         List<List<Integer>> adj = new ArrayList<>();
         for (int i = 0; i < n; i++) {
