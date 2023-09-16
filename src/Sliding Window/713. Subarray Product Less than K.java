@@ -54,16 +54,14 @@ class Solution {
         */
         // Method3: Using sliding window but using right - left + 1
         // so we can add a bunch once at a time;
-        int product = 1, left = 0, res = 0;
-        if (k <= 1) {
-            return 0;
-        }
-        for (int right = 0; right < nums.length; right++) {
+        int res = 0, left = 0, right = 0, product = 1;
+        while (right < nums.length) {
             product *= nums[right];
-            while (product >= k) {
+            while (left <= right && product >= k) {
                 product /= nums[left++];
             }
             res += right - left + 1;
+            right++;
         }
         return res;
     }
