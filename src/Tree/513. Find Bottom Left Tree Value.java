@@ -32,6 +32,22 @@ The number of nodes in the tree is in the range [1, 104].
  * }
  */
 
+// Methodology:
+
+// Left Subtree Processing:
+// If the left child of the current node exists (root.left != null), it checks whether the current level (level + 1) is greater than the maximum depth found so far (ans[0]).
+// If it is greater, it updates ans[0] with the new maximum level and ans[1] with the left child's value (root.left.val).
+// The DFS continues to process the left subtree by calling DFS(root.left, ans, level + 1) recursively.
+
+// Right Subtree Processing:
+// The DFS then proceeds to process the right subtree (DFS(root.right, ans, level + 1)). However, there's no need to update ans when processing the right subtree 
+// because we're specifically looking for the leftmost node at the maximum depth.
+// Check for Leftmost Node at Current Level:
+
+// After processing both left and right subtrees, it checks whether the level is greater than ans[0]. If it is, it means that the current node
+// (not just its left child) is at a greater depth than previously recorded.
+// In this case, it updates ans[0] with the current level and ans[1] with the value of the current node (root.val).
+
 class Solution {
     public int findBottomLeftValue(TreeNode root) {
         // [Preferred] Method DFS, with an int[] arr, arr[0] = level, arr[1] = candidate.val
