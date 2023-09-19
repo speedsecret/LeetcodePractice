@@ -53,6 +53,7 @@ class Solution {
             cols.remove(col);
             diagonals.remove(currDiagonal);
             antiDiagonals.remove(currAntiDiagonal);
+            // put the '.' back to the board.
             state[row][col] = '.';
         }
     }
