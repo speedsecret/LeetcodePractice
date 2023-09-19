@@ -13,6 +13,8 @@ Each solution contains a distinct board configuration of the n-queens' placement
 // Return a list of solved chessBoard that fits all (N) queens in the given board.
 // Return an empty list if no solution found.
 
+// Methodology:
+// To use three hashSet, cols, diagonal, antiDiagonals sets.
 class Solution {
     private int size;
     private List<List<String>> solutions = new ArrayList<>();
