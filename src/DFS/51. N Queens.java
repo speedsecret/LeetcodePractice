@@ -9,6 +9,10 @@ Given an integer n, return all distinct solutions to the n-queens puzzle. You ma
 Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.
 */
 
+// Abstraction:
+// Return a list of solved chessBoard that fits all (N) queens in the given board.
+// Return an empty list if no solution found.
+
 class Solution {
     private int size;
     private List<List<String>> solutions = new ArrayList<>();
