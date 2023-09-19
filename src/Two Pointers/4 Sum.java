@@ -24,9 +24,9 @@ Output: [[2,2,2,2]]
 // Actually treat this problem as a k sum
 // the terminal conditions are two:
 // 1. if the start == nums.length;
-// 2. if we knew the first element in the array is larger then the average of k elements, or the last element in the current
+// 2. if we knew the first element in the sorted array is larger then the average of k elements, or the last element in the current
 // array is smaller than the average of k elements
-// 3. if the k == 2---> return traditional 2SUM.
+// 3. if the k == 2---> return traditional 2SUM with deduplications.
 
 // recursive rule:
 // for each subproblem(target = target - nums[i], k = k - 1)
@@ -49,7 +49,7 @@ class Solution {
         }
 
         // small trick here: calculate the average value of the element
-        // if the smaller one is larger than the average or the larger one is smaller than average --> return res;
+        // if the smallest one in nums is larger than the average or the largest one in nums is smaller than average --> return res;
         long averageValue = target / k;
         if (nums[start] > averageValue || nums[nums.length - 1] < averageValue) {
             return res;
@@ -77,11 +77,16 @@ class Solution {
 
         while (low < high) {
             int curSum = nums[low] + nums[high];
+            // deduplications for left side pointer
             if (curSum < target || (low > start && nums[low] == nums[low - 1])) {
                 low++;
-            } else if (curSum > target || (high < nums.length - 1 && nums[high] == nums[high + 1])) {
+            } 
+            // deduplications for right side pointer
+            else if (curSum > target || (high < nums.length - 1 && nums[high] == nums[high + 1])) {
                 high--;
-            } else {
+            } 
+            // available pair find it
+            else {
                 res.add(Arrays.asList(nums[low++], nums[high--]));
             }
         }
