@@ -1,4 +1,7 @@
 /*
+490. The Maze.java
+https://leetcode.com/problems/the-maze/description/
+
 There is a ball in a maze with empty spaces (represented as 0) and walls (represented as 1). 
 The ball can go through the empty spaces by rolling up, down, left or right, but it won't stop rolling 
 until hitting a wall. When the ball stops, it could choose the next direction.
@@ -13,7 +16,9 @@ Output: true
 Explanation: One possible way is : left -> down -> left -> down -> right -> down -> right.
 */
 
-// Method: Using DFS to check all possible solution(path) to the end.
+// Methodology:
+// We should basically ask about ourselves what are the unique characters for this problem?
+// In that cases, determine what are the terminal conditions, and what are the recursive rule.
 
 class Solution {
     public static final int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
@@ -33,8 +38,10 @@ class Solution {
             return true;
         }
 
-        // mark the current spot has visited
-        visited[row][col] = true;
+        // mark current spot has been visited
+        // also as we won't back track the spot we visited, so we don't reset it back to false
+        // Once you change direction, you won't return to the previous cell because there's no need to backtrack in the maze-solving context.
+        visited[curRow][curCol] = true;
         for (int[] dir : directions) {
             int neiRow = row + dir[0];
             int neiCol = col + dir[1];
