@@ -1,4 +1,7 @@
 /*
+505. The Maze II.java
+https://leetcode.com/problems/the-maze-ii/description/
+
 There is a ball in a maze with empty spaces (represented as 0) and walls (represented as 1). The ball can go through the empty spaces by rolling
 up, down, left or right, but it won't stop rolling until hitting a wall. When the ball stops, it could choose the next direction.
 
