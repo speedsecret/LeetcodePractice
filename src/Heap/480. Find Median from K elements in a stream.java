@@ -38,6 +38,119 @@ Constraints:
 -231 <= nums[i] <= 231 - 1
 */
 
+// Methodology:
+// Use two hashMaps with several helper functions(lazyRemove, add, tryRemove, remove, rebalance)
+// Handle the k == 1 case seperately
+// Handle the i = [0 ~ k) cases
+// Handle the i = [k ~ n) cases
+
+class Solution {
+    HashMap<Integer, Integer> deleted;
+    PriorityQueue<Integer> minHeap, maxHeap;
+    // counts for elements in minHeao and maxHeap
+    int minHS, maxHS;
+    // Array to store results
+    double[] res;
+
+    public double[] medianSlidingWindow(int[] nums, int k) {
+        // Initilize data structures
+        deleted = new HashMap<>();
+        minHeap = new PriorityQueue<>();
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+        res = new double[nums.length - k + 1];
+
+        if (k == 1) {
+            for (int i = 0; i < nums.length; i++) {
+                res[i] = 0.0 + nums[i];
+            }
+            return res;
+        }
+
+        // Initialize the sliding window
+        for (int i = 0; i < k; i++) {
+            add(nums[i]);
+        }
+        res[0] = getMedian();
+
+        // sliding window and calculate medians for each window
+        for (int i = k; i < nums.length; i++) {
+            lazyRemove(nums[i - k]);
+            add(nums[i]);
+            res[i - k + 1] = getMedian();
+        }
+        return res;
+    }
+
+    // put elements which could be removed into a hashMap(used as a buffer), will got removed later
+    private void lazyRemove(int a) {
+        // check if 'a' is in minHeap and maxHeap, decrement counts accordingly
+        if (!minHeap.isEmpty() && a >= minHeap.peek()) {
+            minHS--;
+        } else if (!maxHeap.isEmpty() && a <= maxHeap.peek()) {
+            maxHS--;
+        }
+        deleted.put(a, deleted.getOrDefault(a, 0) + 1);
+    }
+
+    private void add(int a) {
+        if (minHeap.isEmpty() || a > minHeap.peek()) {
+            minHeap.offer(a);
+            minHS++;
+        } else {
+            maxHeap.offer(a);
+            maxHS++;
+        }
+
+        rebalance();
+    }
+
+    // remove an element from the deleted Map
+    private void remove(int r) {
+        deleted.put(r, deleted.get(r) - 1);
+        if (deleted.get(r) == 0) {
+            deleted.remove(r);
+        }
+    }
+
+    // remove deleted elements from the heaps
+    private void tryRemove() {
+        while (!minHeap.isEmpty() && deleted.containsKey(minHeap.peek())) {
+            remove(minHeap.poll());
+        }
+        while (!maxHeap.isEmpty() && deleted.containsKey(maxHeap.peek())) {
+            remove(maxHeap.poll());
+        }
+    }
+
+    private double getMedian() {
+        tryRemove();
+
+        if (minHS == maxHS) {
+            return (double)minHeap.peek() / 2.0 + (double)maxHeap.peek() / 2.0;
+        } else if (minHS > maxHS) {
+            return (double)minHeap.peek();
+        } else {
+            return (double)maxHeap.peek();
+        }
+    }
+
+    // rebalance the heaps to maintain their sizes
+    private void rebalance() {
+        tryRemove();
+        if (minHS - maxHS > 1) {
+            maxHeap.offer(minHeap.poll());
+            minHS--;
+            maxHS++;
+        } else if (maxHS - minHS > 1) {
+            minHeap.offer(maxHeap.poll());
+            minHS++;
+            maxHS--;
+        }
+    }
+}
+
+// ***** the method below would lead to TLE ******
+
 // **Important**
 // Small problem here is that we find the two heaps method would encounter TLE.
 // "Testcases passed, but took too long."
@@ -48,6 +161,8 @@ Constraints:
 // Step3: dealing with median elements --> considering using a boolean 
 // Step4: check the elements that is almost out of the window
 // Step5: dealing with the last sliding window
+
+/*
 
 public double[] medianSlidingWindow(int[] nums, int k) {
         // Initialize two heaps: minHeap for the larger half, maxHeap for the smaller half
@@ -92,3 +207,4 @@ public double[] medianSlidingWindow(int[] nums, int k) {
         return medians;
     }
 }
+*/
