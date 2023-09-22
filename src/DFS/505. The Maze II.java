@@ -20,7 +20,12 @@ Explanation: One possible way is : left -> down -> left -> down -> right -> down
 The length of the path is 1 + 1 + 3 + 1 + 2 + 2 + 2 = 12.
 */
 
-// Method: Use BFS + Dijkstra + PriorityQueue + (Class)State
+// Methodology: PQ + BFS + dijkstra(shortest distance)
+// Use a priorityQueue to store the smallest distances element(State class)
+// Use an int[][] distance to record previous distance configuration for every spot in the matrix
+// Use a new Class State to record the row, col and distance
+// Traverse the maze from the starting point, updating the distance matrix on the fly.
+// this.State.distance represent the distance from starting point to current spot
 
 class State {
     int row;
