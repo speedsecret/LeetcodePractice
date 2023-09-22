@@ -23,6 +23,7 @@ Output: [[0,0,0],[0,0,0]]
 Explanation: The starting pixel is already colored 0, so no changes are made to the image.
 */
 
+// Recommended:
 // DFS approach
 class Solution {
     private final int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
@@ -54,3 +55,42 @@ class Solution {
         }
     }
 }
+
+
+// BFS
+/*
+class Solution {
+    private final int[][] dirs = new int[][]{{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+        // use BFS
+        if (image[sr][sc] == color) {
+            return image;
+        }
+        Deque<int[]> queue = new ArrayDeque<>();
+        int m = image.length, n = image[0].length;
+        boolean[][] visited = new boolean[m][n];
+        queue.offerLast(new int[]{sr, sc});
+        int originColor = image[sr][sc];
+        image[sr][sc] = color;
+        visited[sr][sc] = true;
+        
+        // process the queue
+        while (!queue.isEmpty()) {
+            int[] pre = queue.pollFirst();
+            int preRow = pre[0], preCol = pre[1];
+            for (int[] dir : dirs) {
+                int neiRow = preRow + dir[0];
+                int neiCol = preCol + dir[1];
+                if (neiRow >= 0 && neiRow < m && neiCol >= 0 && neiCol < n && !visited[neiRow][neiCol]) {
+                    if (image[neiRow][neiCol] == originColor) {
+                        queue.offerLast(new int[]{neiRow, neiCol});
+                        image[neiRow][neiCol] = color;
+                    }
+                    visited[neiRow][neiCol] = true;
+                }
+            }
+        }
+        return image;
+    }
+}
+*/
