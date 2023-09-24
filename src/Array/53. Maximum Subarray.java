@@ -1,4 +1,7 @@
 /*
+53. Maximum Subarray.java
+https://leetcode.com/problems/maximum-subarray/description/
+
 Given an integer array nums, find the 
 subarray with the largest sum, and return its sum.
 
@@ -25,6 +28,12 @@ Constraints:
 
 Follow up: If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
 */
+
+// Methodology:
+// The objective is to determine the maximum sum within a subarray without the need to track the indices
+// of this subarray. Instead, we can utilize two integer variables: `curSum` and `maxSum`.
+// At each step, we decide whether to continue with the previous sum or to start anew with the current
+// element.
 
 class Solution {
     public int maxSubArray(int[] nums) {
