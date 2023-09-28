@@ -51,6 +51,7 @@ class Solution {
 }
 
 // Solution for Leetcode 1283
+// https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/description/
 class Solution {
     public int smallestDivisor(int[] nums, int threshold) {
         int left = 1, right = (int)1e6;
@@ -75,3 +76,34 @@ class Solution {
         return left;
     }
 }
+
+// Solution for Leetcode 1891:
+// https://leetcode.com/problems/cutting-ribbons/
+class Solution {
+    public int maxLength(int[] ribbons, int k) {
+        int left = 1;
+        int right = 100001; // Equivalent to (int) 1e5 + 1
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            // if the length of ribbon is mid
+            // are we able to cut it into >= k pieces?
+            // if not, shorten the right(then try with a shorten length)
+            if (!isCutPossible(ribbons, mid, k)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left - 1;
+    }
+
+    private boolean isCutPossible(int[] ribbons, int mid, int k) {
+        int count = 0;
+        for (int ele : ribbons) {
+            count += ele / mid;
+        }
+        return count >= k;
+    }
+}
+
