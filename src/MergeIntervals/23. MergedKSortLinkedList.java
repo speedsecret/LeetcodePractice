@@ -1,12 +1,45 @@
-package MergeIntervals;
+/*
+23. MergedKSortLinkedList.java
+https://leetcode.com/problems/merge-k-sorted-lists/description/
 
-import com.sun.org.apache.bcel.internal.classfile.SourceFile;
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+Merge all the linked-lists into one sorted linked-list and return it.
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+Example 1:
 
+Input: lists = [[1,4,5],[1,3,4],[2,6]]
+Output: [1,1,2,3,4,4,5,6]
+Explanation: The linked-lists are:
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+merging them into one sorted list:
+1->1->2->3->4->4->5->6
+Example 2:
+
+Input: lists = []
+Output: []
+Example 3:
+
+Input: lists = [[]]
+Output: []
+ 
+Constraints:
+
+k == lists.length
+0 <= k <= 104
+0 <= lists[i].length <= 500
+-104 <= lists[i][j] <= 104
+lists[i] is sorted in ascending order.
+The sum of lists[i].length will not exceed 104.
+*/
+// Methodology
+// Use a priorityQueue and put every first ListNode of the list into the queue
+// As long as the priorityQueue is not empty
+// we would keep constructing the linkedList
+    
 public class MergedKSortLinkedList {
     // similarly to the MergeKSortedArray
     // Step1: We still using a minHeap, with a dummy node
