@@ -31,6 +31,16 @@ positions[i].length == 2
 0 <= ci < n
 */
 
+// Use the unionfind
+// for each element in the positions
+// check if it is current water, if not
+// check with its all possible neighbor
+// if the neighbor is valid and it is land
+// and perform union fine
+// if the current element and it is neighbor are different root
+// union them together as it is attached to each other
+// decrement currentLandCount once
+// put the currentLandCount to the result
 
 class UnionFind {
     private int[] parents;
@@ -59,7 +69,9 @@ class UnionFind {
     public void union(int p, int q) {
         int rootP = find(p);
         int rootQ = find(q);
-        if (rootP == rootQ) return; // Elements p and q are already in the same set
+        
+        // Elements p and q are already in the same set
+        if (rootP == rootQ) return; 
 
         // Union by size to merge the smaller set into the larger set
         if (sizes[rootP] < sizes[rootQ]) {
@@ -85,13 +97,16 @@ public class Solution {
             int col = position[1];
 
             if (grid[row][col] == 0) {
+                // mark the current spot into a land
                 grid[row][col] = 1;
+                // increment 1 automatically
                 islandCount++;
 
                 for (int[] dir : directions) {
                     int newRow = row + dir[0];
                     int newCol = col + dir[1];
                     // the neighbor is already land too
+                    // the neighbor is within the boundary as well as it is already land too, we need to check if they belongs to the same root.
                     if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && grid[newRow][newCol] == 1) {
                         int current = row * n + col;
                         int neighbor = newRow * n + newCol;
