@@ -39,6 +39,11 @@ At most 3 * 104 calls will be made to update and sumRange.
 
 */
 
+// SegmentTreeNode Class: 
+// This class represents a node in the segment tree. 
+// It stores the start and end indices of the range it covers (inclusive), 
+// References to its left and right children, and the sum of values in the range it represents.
+
 class SegmentTreeNode {
     // note down the start Index and end Index
     // left subTreeNode and right subTreeNode
@@ -106,8 +111,8 @@ public class NumArray {
             if (pos <= mid) {
                 // Recursively update the left subtree
                 update(root.left, pos, val);
-            } 
-            // case2: pos > mid;
+            }
+            // case2: pos >= mid + 1;
             else {
                 // Recursively update the right subtree
                 update(root.right, pos, val);
@@ -128,6 +133,10 @@ public class NumArray {
             // If the current node's range matches the query range, return its sum
             return root.sum;
         } else {
+            // mindset:
+            // It checks if the current node's range matches the desired range [left, right]. 
+            // If they match, it returns the sum of the current node.
+            // If the desired range falls entirely within the left or right subtree, it recursively searches in that subtree.
             // the starting root is the real root, which means it begin from 0 to nums.length - 1;
             int mid = root.start + (root.end - root.start) / 2;
             // case 1: it is only related to left subTree;
