@@ -32,6 +32,8 @@ All elements of candidates are distinct.
 // Methodology:
 // DFS and loop the index from i to candidates.length - 1
 // terminal condition is when the target equals 0 or target smaller than 0
+// for the recursive rule:
+// the index parameter will keep the same and won't needs to be added up.
 
 class Solution {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
