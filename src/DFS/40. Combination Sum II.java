@@ -1,5 +1,5 @@
 /*
-40. Combination  II.java
+40. Combination Sum II.java
 https://leetcode.com/problems/combination-sum-ii/
 
 Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
@@ -57,6 +57,9 @@ class Solution {
 
         // recursive rule:
         for (int i = index; i < candidates.length; i++) {
+            // ******* Attention Please *******
+            // the i is larger than index, which is the starting point
+            // of the current layer
             if (i > index && candidates[i - 1] == candidates[i]) {
                 continue;
             }
