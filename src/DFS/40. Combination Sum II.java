@@ -36,6 +36,7 @@ Constraints:
 // Use DFS and garantuee that no element in the candidates array can be used more than once.
 // Firstly, we need to sort the array
 // Secondly, we need to deduplication
+// Thirdly, in the DFS, we need to increment 1 for the index
 
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
