@@ -24,29 +24,29 @@ All the numbers of nums are unique.
 */
 
 public class AllSubsets {
-    public static List<String> allSubsets(String str) {
-        if (str == null) {
-            return new ArrayList<>();
-        }
-        List<String> result = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        char[] set = str.toCharArray();
-        buildAllPossibleSubsets(result, sb, set, 0);
-        return result;
+    // Methodology
+    // This can be printed out as long as the index met the length of the array nums
+    // Instead of just print it out no matter what in the recursive function
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        dfs(res, nums, new ArrayList<>(), 0);
+        return res;    
     }
 
-    private static void buildAllPossibleSubsets(List<String> result,
-                                                StringBuilder sb, char[] set, int index) {
-        // base case:
-        if (index == set.length)  {
-            result.add(sb.toString());
+    private void dfs(List<List<Integer>> res, int[] nums, List<Integer> sol, int index) {
+        // base case
+        if (index == nums.length) {
+            res.add(new ArrayList<>(sol));
             return;
         }
-        // not pick the character at currentIndex
-        buildAllPossibleSubsets(result, sb, set, index + 1);
-        // pick up the character at currentIndex
-        buildAllPossibleSubsets(result, sb.append(set[index]), set, index + 1);
-        sb.deleteCharAt(sb.length() - 1);
+
+        // recursive rule
+        // four lines of code
+        sol.add(nums[index]); //--------> add the current element into the solution list
+        dfs(res, nums, sol, index + 1); //--------> recursion based on adding current element in the solution list
+        sol.remove(sol.size() - 1); //--------> remove the last element from the solution list
+        dfs(res, nums, sol, index + 1); //--------> recursion based on not adding current element in the solution list
     }
 
     public static void main(String[] args) {
