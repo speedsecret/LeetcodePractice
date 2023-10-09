@@ -33,9 +33,11 @@ The number of nodes in the tree is in the range [1, 104].
  */
 
 // Methodology:
+// As the goal is to print the BottomLeft Tree, so as long as leftSubTree exists, it is reasonably that to aggressively record the candidate val in the leftSubTree.
+// Then recursively check the leftSubTree, rightSubTree and current level.
 
 // Left Subtree Processing:
-// If the left child of the current node exists (root.left != null), it checks whether the current level (level + 1) is greater than the maximum depth found so far (ans[0]).
+// If the left child of the current node exists (root.left != null), it checks whether the left SubTree level (level + 1) is greater than the maximum depth found so far (ans[0]).
 // If it is greater, it updates ans[0] with the new maximum level and ans[1] with the left child's value (root.left.val).
 // The DFS continues to process the left subtree by calling DFS(root.left, ans, level + 1) recursively.
 
