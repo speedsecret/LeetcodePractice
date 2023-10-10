@@ -63,29 +63,26 @@ public class Codec {
     }
 
     private TreeNode deserialize(String s, int[] pos, int min, int max) {
-        // base case 
-        if (pos[0] >= s.length()) {
+        // base case:
+        if(pos[0] == s.length()) {
             return null;
         }
-
-        // find the the comma position
-        // public int indexOf(int ch, int fromIndex)
-        // returns the index within this string of the first occurrence of the specified character, starting the search at the specified index.
-
+        // find the commaPos at the beginning
         int commaPos = s.indexOf(",", pos[0]);
+        // get the string curStr
+        // by using s.substring(i, j)
         String curStr = s.substring(pos[0], commaPos);
         int val = Integer.parseInt(curStr);
+        // check the val with the min as well as the max
         if (val < min || val > max) {
             return null;
         }
-
-        // updated the pos[0];
-        // set up a new start position
+        // update the pos[0] in advance as this current value must be valid.
         pos[0] = commaPos + 1;
-        TreeNode node = new TreeNode(val);
-        node.left = deserialize(s, pos, min, node.val);
-        node.right = deserialize(s, pos, node.val, max);
-        return node;
+        TreeNode newNode = new TreeNode(val);
+        newNode.left = deserialize(s, pos, min, val);
+        newNode.right = deserialize(s, pos, val, max);
+        return newNode;
     }
 }
 
