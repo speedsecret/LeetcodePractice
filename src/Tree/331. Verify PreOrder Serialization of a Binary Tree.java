@@ -12,18 +12,14 @@ For example, it could never contain two consecutive commas, such as "1,,3".
 Note: You are not allowed to reconstruct the tree.
 
 Example 1:
-
 Input: preorder = "9,3,4,#,#,1,#,#,2,#,6,#,#"
 Output: true
 Example 2:
-
 Input: preorder = "1,#"
 Output: false
 Example 3:
-
 Input: preorder = "9,#,#,1"
 Output: false
- 
 
 Constraints:
 
@@ -41,11 +37,17 @@ class Solution {
         int slots = 1;
         int n = preorder.length();
         for (int i = 0; i < n; i++) {
-            if (preorder.charAt(i) == ',') {
+            if (preorder.charAt(i) == ','){
+                // it is possible that the current character will be an element
+                // so to decrement 1
                 slots--;
+                // at any given time the slots shouldn't smaller than 0
                 if (slots < 0) {
                     return false;
                 }
+                // check previous index, if it is not '#'
+                // which means the next following 2 elements should be have non-null value present.
+                // so to increment 2 and update the slots
                 if (preorder.charAt(i - 1) != '#') {
                     slots += 2;
                 }
