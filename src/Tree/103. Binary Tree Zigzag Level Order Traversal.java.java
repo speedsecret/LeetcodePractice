@@ -17,11 +17,13 @@ https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
  *     }
  * }
  */
+
+// BFS with an int variable level, determine the logic from left to right, or vice versa. 
+// use an int variable level to understand if we need to print the current level
+// from left to right or from right to the left
+
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        // BFS with an int variable level, determine the logic from left to right, or vice versa. 
-        // use an int variable level to understand if we need to print the current level
-        // from left to right or from right to the left
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
             return res;
