@@ -60,6 +60,9 @@ class Solution {
            State curState = pq.poll();
            int curRow = curState.row;
            int curCol = curState.col;
+	   // in each operation, we are trying to update the distance[curRow][curCol] 
+           // so to achieve the shortest distance at the end
+	   // hence if the distance[curRow][curCol] < curState.distance, we should skip this.
            if (distance[curRow][curCol] < curState.distance) {
                continue;
            }
@@ -79,6 +82,7 @@ class Solution {
                neiCol -= dir[1];
                if (distance[curRow][curCol] + count < distance[neiRow][neiCol]) {
                    distance[neiRow][neiCol] = distance[curRow][curCol] + count;
+		   // adding the new State into the pq
                    pq.add(new State(neiRow, neiCol, distance[neiRow][neiCol]));
                }
            }
