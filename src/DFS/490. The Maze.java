@@ -17,8 +17,12 @@ Explanation: One possible way is : left -> down -> left -> down -> right -> down
 */
 
 // Methodology:
-// We should basically ask about ourselves what are the unique characters for this problem?
-// In that cases, determine what are the terminal conditions, and what are the recursive rule.
+// Use DFS to traverse the possible rolling path all the way to the target destination
+// In the nested DFS method, mark the current visited spot as true which means it spot has visited
+// and no longer need to revisit again.
+// In that cases, determine what are the terminal conditions(is the index coordinator is out of the boundary,
+// and what are the recursive rule: the recursive rule is check if the valid (neiRow, neiCol) spot
+// which has not been visited is returning true
 
 class Solution {
     public static final int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
