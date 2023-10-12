@@ -32,78 +32,69 @@ Constraints:
 words[i] consists of only lowercase English letters.
 */
 
-
+// Similar to course schedule I, but using a different type of dataType within the adjList
+// Also, it is required to use the StringBuilder at the middle end part to construct a final String
+// Adding the validation check is necessary.
+// For words[i] only consists of lowercase english letter, int[] Degree = new int[26] would be sufficient.
 class Solution {
     public String alienOrder(String[] words) {
-        // Methodology:
-        // Step1:
-        // Extract the relationships
-        // Step2:
-        // Representing the relationships
-        // Step3:
-        // Build up one possible alienOrder
+        int[] inDegree = new int[26]; // To fit into the problem statement, it only consists of only lowercase English letters.
         Map<Character, List<Character>> adjList = new HashMap<>();
-        Map<Character, Integer> counts = new HashMap<>();
 
-        // Step1:
-        for (String word: words) {
+        // initilization
+        for (String word : words) {
             for (char c : word.toCharArray()) {
-                counts.putIfAbsent(c, 0);
                 adjList.putIfAbsent(c, new ArrayList<>());
             }
         }
 
-        // Step2:
-        // find all edges:
+        // construct the adjList and inDegree
         for (int i = 0; i < words.length - 1; i++) {
             String word1 = words[i], word2 = words[i + 1];
-            // prefix violation check
             if (word1.length() > word2.length() && word1.startsWith(word2)) {
                 return "";
             }
-            // find the first non-match and insert the corresponding relation.
             for (int j = 0; j < Math.min(word1.length(), word2.length()); j++) {
                 char pre = word1.charAt(j), cur = word2.charAt(j);
                 if (pre != cur) {
                     adjList.get(pre).add(cur);
-                    counts.put(cur, counts.get(cur) + 1);
+                    inDegree[cur - 'a']++; // Update in-degree using the array
                     break;
                 }
-                // if there is a match, we can just advance our character by 1 step
             }
         }
 
-        // Step3: Build a valid output
+        // setup the queue
         StringBuilder sb = new StringBuilder();
         Deque<Character> queue = new ArrayDeque<>();
 
-        for (char c : counts.keySet()) {
-            if (counts.get(c).equals(0)) {
+        for (char c : adjList.keySet()) {
+            if (inDegree[c - 'a'] == 0) {
                 queue.offerLast(c);
             }
         }
 
-        // BFS process the queue
+        // process the queue dynamically and build up the StringBuilder.
         while (!queue.isEmpty()) {
             char c = queue.pollFirst();
             sb.append(c);
 
             for (char nei : adjList.get(c)) {
-                counts.put(nei, counts.get(nei) - 1);
-                // whne the current char's inDegree is equals to 0, we put it to queue
-                if (counts.get(nei).equals(0)) {
+                inDegree[nei - 'a']--;
+                if (inDegree[nei - 'a'] == 0) {
                     queue.offerLast(nei);
                 }
             }
         }
 
-        // final check to see if we found a match
-        if (sb.length() < counts.size()) {
+        // validation check if can not met the requirement, we should return "".
+        if (sb.length() < adjList.size()) {
             return "";
         }
         return sb.toString();
     }
 }
+
 
 /*
 // Method2: DFS solution
