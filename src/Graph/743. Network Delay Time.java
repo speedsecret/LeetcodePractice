@@ -3,9 +3,12 @@
 https://leetcode.com/problems/network-delay-time/description/
 
 You are given a network of n nodes, labeled from 1 to n. 
-You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi), where ui is the source node, vi is the target node, and wi is the time it 
-takes for a signal to travel from source to target.
-We will send a signal from a given node k. Return the minimum time it takes for all the n nodes to receive the signal. If it is impossible for all the n nodes to receive the signal, return -1.
+You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi), where 
+ui is the source node, 
+vi is the target node, 
+wi is the time it takes for a signal to travel from source to target.
+We will send a signal from a given node k. 
+Return the minimum time it takes for all the n nodes to receive the signal. If it is impossible for all the n nodes to receive the signal, return -1.
 
 Example 1:
 Input: times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2
@@ -26,7 +29,10 @@ times[i].length == 3
 ui != vi
 0 <= wi <= 100
 All the pairs (ui, vi) are unique. (i.e., no multiple edges.)
-  */
+*/
+
+// Methodology
+// This is really like the maze II, which also use a PriorityQueue with BFS + dijkstra.
 
 class Solution {
     public int networkDelayTime(int[][] times, int n, int k) {
@@ -81,6 +87,8 @@ class Solution {
             }
         }
 
+        // use an int answer to validate all element
+        // we are not allow any of the element in the signalReceivedAt array is Integer.MAX_VALUE.
         int answer = Integer.MIN_VALUE;
         for (int i = 1; i <= n; i++) {
             answer = Math.max(answer, signalReceivedAt[i]);
