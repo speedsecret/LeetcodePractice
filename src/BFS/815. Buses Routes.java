@@ -33,7 +33,7 @@ sum(routes[i].length) <= 105
 
 // Methodology
 // Basically, setup an array of List<Integer> each index represent every station
-// and each station contains all different routes
+// and each station represent all different routes
 
 class Solution {
     public int numBusesToDestination(int[][] routes, int source, int target) {
@@ -101,3 +101,66 @@ class Solution {
         return -1;
     }
 }
+
+/*
+Version 2:
+class Solution {
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        if (source == target) {
+            return 0;
+        }
+        // 来看看有多少个Station
+        int maxStation = 0;
+        for (int i = 0; i < routes.length; i++) {
+            for (int j = 0; j < routes[i].length; j++) {
+                maxStation = Math.max(maxStation, routes[i][j]);
+            }
+        }
+
+        // 建立从station 到 路线的一个映射关系
+        // 注意这个语法的规范性
+        List<Integer>[] stationToRoutes = new ArrayList[maxStation + 1];
+        
+        for (int i = 0; i < routes.length; i++) {
+            for (int j = 0; j < routes[i].length; j++) {
+                int curStation = routes[i][j];
+                if (stationToRoutes[curStation] == null) {
+                    stationToRoutes[curStation] = new ArrayList<>();
+                }
+                stationToRoutes[curStation].add(i);
+            }
+        }
+
+        // Initilize the BFS queue
+        Deque<Integer> queue = new ArrayDeque<>();
+        Set<Integer> visited = new HashSet<>();
+
+        int[] result = new int[maxStation + 1];
+        queue.offerLast(source);
+
+        while (!queue.isEmpty()) {
+            int curStation = queue.pollFirst();
+            for (int busRoute : stationToRoutes[curStation]) {
+                // check if this busRoute has been visited before
+                // if so we just don't need to revisit it
+                if (!visited.contains(busRoute)) {
+                    for (int station : routes[busRoute]) {
+                        if (station == curStation) {
+                            continue;
+                        }
+                        if (result[station] == 0) {
+                            result[station] = result[curStation] + 1;
+                            queue.offerLast(station);
+                        }
+                        if (station == target) {
+                            return result[target];
+                        }
+                    }
+                }
+                visited.add(busRoute);
+            }
+        }
+        return -1;
+    }
+}
+*/
