@@ -48,9 +48,12 @@ class Solution {
             return 0;
         }
         int k = costs[0].length, n = costs.length;
+        // traverse the house in each possible color
         for (int house = 1; house < n; house++) {
             // find the minColor and the secondMinColor in the previous row
             int minColor = -1, secondMinColor = -1;
+            // loop all the colors and update the minColor for this house
+            // prepare for the calculation
             for (int color = 0; color < k; color++) {
                 int cost = costs[house - 1][color];
                 // ****** use cost to compare with costs[house - 1][minColor] and costs[house - 1][color]
@@ -63,6 +66,9 @@ class Solution {
             }
 
             // calculate the new costs for the current row
+            // if the currentColor equals to the minColor, update this level of secondMinColor costs by adding
+            // the last level of color into the current one.
+            // else, adding the level of minColor costs.
             for (int color = 0; color < k; color++) {
                 if (color == minColor) {
                     costs[house][color] += costs[house - 1][secondMinColor];
