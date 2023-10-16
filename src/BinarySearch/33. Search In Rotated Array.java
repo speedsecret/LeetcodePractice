@@ -19,6 +19,10 @@ Input: nums = [1], target = 0
 Output: -1
 */
 
+// Methodology
+// check if both parties [left, mid) && (mid, right] would have a linear increasing or decreasing order
+// also, the terminal condition of the while loop should be left <= right.
+
 
 class Solution {
     public int search(int[] nums, int target) {
