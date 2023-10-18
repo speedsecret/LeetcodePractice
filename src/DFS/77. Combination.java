@@ -21,8 +21,9 @@ Constraints:
 1 <= k <= n
 */
 
-// Methodology
-// DFS 
+// Methodology: DFS
+// it is possible to use 1 ~ n as the consisted component in the solution without duplication
+// so to apply a for loop in the recursively rule
 // Base case: sol.size() == k
 // recursive rule: dfs(res, n, k, sol, i + 1);
 
