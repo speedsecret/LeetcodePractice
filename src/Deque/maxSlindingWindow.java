@@ -27,8 +27,12 @@ Output: [1]
 // two stages:
 // 1st stage: elements' index less than k, we should just adding or poll elements' index into it
 // 2st stage: check the peekFirst() element's index, if it equals to i - k, remove it, repeat stage 1 while loop, record the current max.
-class Solution {
-    public int[] maxSlidingWindow(int[] nums, int k) {
+package Deque;
+
+import java.util.*;
+
+class MaxSlidingWindow {
+    public static int[] maxSlidingWindow(int[] nums, int k) {
         Deque<Integer> dq = new ArrayDeque<>();
         int[] arr = new int[nums.length - k + 1];
         int start = 0;
@@ -62,6 +66,14 @@ class Solution {
         return arr;
     }
 
+    public static void main(String[] args) {
+        int[] nums = new int[]{3, 2, 1, 4, 9};
+        int k = 2;
+        int[] maxSlidingWindowRes = maxSlidingWindow(nums, k);
+        for (int ele : maxSlidingWindowRes) {
+            System.out.printf("current element is: " + ele + "\n");
+        }
+    }
 /*
  public int[] maxSlidingWindow(int[] nums, int k) {
         // Method 1: use PriorityQueue to store the max element(maxHeap) and two pointer --> TTL due to remove time is really time consuming
