@@ -26,19 +26,23 @@ Output: []
 class Solution {
     public List<List<Integer>> getFactors(int n) {
         List<List<Integer>> res = new LinkedList<>();
-        //  The elements in the temporary list are those that can be divided by a specific set of other elements.
+        // Initilized a list which only contains the initial factor.
         getAllPossibleFactors(res, new LinkedList<>(Arrays.asList(n)));
         return res;
     }
 
     private void getAllPossibleFactors(List<List<Integer>> res, LinkedList<Integer> list) {
-        // base case: when to add numbers
+        // base case
+        // as long as the list has a size over 1, which means
+        // we found a valid factor combinations
         if (list.size() > 1) {
             res.add(new LinkedList<>(list));
         }
         // the lastFactor here will become the new elements that can be multiplied together.
         int lastFactor = list.removeLast();
         // the below for loop would help to avoid duplicates
+        // the current factor i can from 2(if the list is empty) up to the square root of the last element.
+        // lastFactor / i represent the current possible factor, but the lastFact % i represent whether there is a remainder.
         for (int i = list.isEmpty() ? 2 : list.peekLast(); i <= lastFactor / i; i++) {
             if (lastFactor % i == 0) {
                 list.add(i);
@@ -48,7 +52,7 @@ class Solution {
                 list.removeLast();
             }
         }
-        // add lastFactor into the list
+        // add lastFactor into the list, backtracking so to consider all possible combination are considered.
         list.add(lastFactor);
     }
 }
