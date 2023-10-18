@@ -40,10 +40,9 @@ class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         //Approach II
         //DFS find the final courses and find out if there exist a cycle or not;
+        
         //create adjList
         //create a visited Map to store it
-       // DFS check the recursive subproblems
-        // adj list
         // HashMap to record courses that have been visited
         // build up and initilize the visited map
         List<List<Integer>> adj = new ArrayList<>();
@@ -69,12 +68,12 @@ class Solution {
 
         int[] arr = new int[numCourses];
         for (int i = 0; i < numCourses; i++) {
-            arr[i] = res.get(numCourses - i - 1);
+            arr[i] = res.get(i);
         }
         return arr;
     }
 
-    private boolean topoLogicalSort(List<List<Integer>> adj, int i, Map<Integer, Integer> visited, List<Integer> res) {
+    private boolean topoLogicalSort(List<List<Integer>> adj, int i, Map<Integer, Integer> visited, LinkedList<Integer> res) {
         // base case
         if (visited.get(i) == 2) {
             return true;
@@ -89,7 +88,7 @@ class Solution {
             }
         }
         visited.put(i, 2);
-        res.add(i);
+        res.addFirst(i);
         return true;
     }
 }
