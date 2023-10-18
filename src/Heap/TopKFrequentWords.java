@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 
 /*
+692. Top K frequent Words.java
 Given a composition with different kinds of words, return a list of the top K most frequent words in the composition.
 
 Assumptions
@@ -57,6 +58,37 @@ public class TopKFrequentWords {
         }
         return res;
     }
+
+    /*
+    class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        // Method1: use MaxHeap
+        Map<String, Integer> cnt = new HashMap<>();
+        for (String word : words) {
+            cnt.put(word, cnt.getOrDefault(word, 0) + 1);
+        }
+
+        PriorityQueue<String> pq = new PriorityQueue<>(
+            (a, b) -> cnt.get(a).equals(cnt.get(b)) ? b.compareTo(a) : cnt.get(a) - cnt.get(b)
+        );
+        for (String str : cnt.keySet()) {
+            pq.add(str);
+            if (pq.size() > k) {
+                pq.poll(); 
+            }
+        }
+
+        // prep for the output
+        List<String> res = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            res.add(pq.poll());
+        }
+        Collections.reverse(res);
+        return res;
+        // [TODO]Method2: use BucketSort + Trie
+    }
+}
+    */
 
     private static Map<Character, Integer> buildMap(String[] combo) {
         Map<Character, Integer> map = new HashMap<>();
