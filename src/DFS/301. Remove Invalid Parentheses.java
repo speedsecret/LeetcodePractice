@@ -2,10 +2,7 @@
 301. Remove Invalid Parentheses
 https://leetcode.com/problems/remove-invalid-parentheses/description/
 Given a string s that contains parentheses and letters, remove the minimum number of invalid parentheses to make the input string valid.
-
 Return a list of unique strings that are valid with the minimum number of removals. You may return the answer in any order.
-
- 
 
 Example 1:
 
@@ -76,10 +73,10 @@ class Solution {
             // skip it when the char is smallcase letter
             if (s.charAt(i) == '(' || s.charAt(i) == ')') {
                 String curr = s.substring(0, i) + s.substring(i + 1); // Remove current parentheses
-                // remove right parentheses first
-                if (r > 0 && s.charAt(i) == ')') {
+                // little trick here: remove right parentheses first
+                if (s.charAt(i) == ')' && r > 0) {
                     dfs(curr, i, l, r - 1, ans); // Recursively explore with ')' removed
-                } else if (l > 0 && s.charAt(i) == '(') {
+                } else if (s.charAt(i) == '(' && l > 0) {
                     dfs(curr, i, l - 1, r, ans); // Recursively explore with '(' removed
                 }
             }
@@ -96,8 +93,9 @@ class Solution {
             if (ch == ')') {
                 count--;
             }
+            // At any given time, if ')' appears before '(' return false
             if (count < 0) {
-                return false; // Invalid if ')' appears before '('
+                return false; 
             }
         }
         return count == 0; // Valid if count is 0 at the end
