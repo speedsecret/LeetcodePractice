@@ -75,6 +75,7 @@ class Solution {
                 String curr = s.substring(0, i) + s.substring(i + 1); // Remove current parentheses
                 // little trick here: remove right parentheses first
                 if (s.charAt(i) == ')' && r > 0) {
+                    // so in the subproblem the i is not moved one steps further.
                     dfs(curr, i, l, r - 1, ans); // Recursively explore with ')' removed
                 } else if (s.charAt(i) == '(' && l > 0) {
                     dfs(curr, i, l - 1, r, ans); // Recursively explore with '(' removed
