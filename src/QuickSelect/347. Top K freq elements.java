@@ -19,60 +19,59 @@ It is guaranteed that the answer is unique.
  
 Follow up: Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
 */
+
+// You are more than welcome to use the minHeap to compare
+// but I guess the therotical time complexity is slower --> nlogk
+
 class Solution {
-    Map<Integer, Integer> freqMap;
     public int[] topKFrequent(int[] nums, int k) {
-        // Use quickSelect
-        // Create a hashMap, find the frequencies for each element in nums
-        // We would construct an array, which have all unique elements
-        // using the elements as index to retrive frequencies from map
-        // for each parition, we would sort larger elements into the right side
-        // so from the range of [targetIndex, targetIndex + k), is the result we want to returned.
-        if (nums == null || nums.length == 0) {
-            return new int[]{};
-        }
-        if (k >= nums.length) {
-            return nums;
-        }
-        freqMap = new HashMap<>();
-        for (int num : nums) {
-            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
-        }
-        // mapToInt(Integer::intValue): Here, we use the mapToInt method to map each key (which is of type Integer) to its primitive int value. This step is essentially converting the Stream of Integer objects into a Stream of int primitives. It's equivalent to calling .intValue() on each Integer object.
+        Map<Integer, Integer> freqMap = getFreqMap(nums);
+        // construct a distinct int array
         int[] elements = freqMap.keySet().stream().mapToInt(Integer::intValue).toArray();
-
-        int left = 0, right = elements.length - 1, targetIndex = elements.length - k;
-        while (left <= right) {
-            int pivotIndex = partition(elements, left, right);
-
-            if (pivotIndex == targetIndex) {
-                break;
-            } else if (pivotIndex < targetIndex) {
-                left = pivotIndex + 1;
+        // use quickSelect
+        int left = 0, right = elements.length - 1;
+        while (left < right) {
+            int mid = partition(elements, freqMap, left, right);
+            if (mid > k - 1 ) {
+                right = mid - 1;
+            } else if (mid < k - 1){
+                left = mid + 1;
             } else {
-                right = pivotIndex - 1;
+                break;
             }
         }
-        return Arrays.copyOfRange(elements, targetIndex, targetIndex + k);
+        return Arrays.copyOfRange(elements, 0, k);
     }
 
-    private int partition(int[] elements, int left, int right) {
-        int pivotFreq = freqMap.get(elements[right]);
-        int pivotIndex = left;
-
-        for (int i = left; i < right; i++) {
-            if (freqMap.get(elements[i]) < pivotFreq) {
-                swap(elements, pivotIndex, i);
-                pivotIndex++;
+    private int partition(int[] elements, Map<Integer, Integer> map, int left, int right) {
+        int pivotIndex = elements[left];
+        int pivot = map.get(pivotIndex);
+        int i = left + 1, j = right;
+        while (i <= j) {
+            if (map.get(elements[j]) >= pivot) {
+                swap(elements, i++, j);
+            } else if (map.get(elements[j]) <= pivot) {
+                swap(elements, i, j--);
+            } else {
+                i++;
+                j--;
             }
         }
-        swap(elements, pivotIndex, right);
-        return pivotIndex;
+        swap(elements, left, j);
+        return j;
     }
 
-    private void swap(int[] elements, int left, int right) {
-        int temp = elements[left];
-        elements[left] = elements[right];
-        elements[right] = temp;
+    private Map<Integer, Integer> getFreqMap(int[] nums) {
+        Map<Integer, Integer> freqMap = new HashMap<>();
+        for (int ele : nums) {
+            freqMap.put(ele, freqMap.getOrDefault(ele, 0) + 1);
+        }
+        return freqMap;
+    }
+
+    private void swap(int[] nums, int left, int right) {
+        int temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
     }
 }
