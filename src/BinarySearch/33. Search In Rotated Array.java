@@ -20,7 +20,11 @@ Output: -1
 */
 
 // Methodology
-// check if both parties [left, mid) && (mid, right] would have a linear increasing or decreasing order
+// check if both parties 
+// condition1: [left, mid) would have a linear increasing or decreasing order
+// plus to check if the target within range if (target >= nums[left] && target < nums[right])
+// condition2: (mid, right] would have a linear increasing or decreasing order
+// plus to check if the target within range if (target <= nums[right] && target > nums[left])
 // also, the terminal condition of the while loop should be left <= right.
 
 
