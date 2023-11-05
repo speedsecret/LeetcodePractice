@@ -53,55 +53,49 @@ class Solution {
         // Put larger elements to larger list, 
         // put equal element to same list
         // put smaller elements to smaller list
-        List<Integer> list = Arrays.stream(nums)
-                                    .boxed()
-                                    .collect(Collectors.toList());
-        return quickSelect(list, k);
-    }
-
-    private int quickSelect(List<Integer> list, int k) {
-        int pivotIndex = new Random().nextInt(list.size());
-        int pivot = list.get(pivotIndex);
-        
-        // construct 3 lists
-        List<Integer> smallerList = new ArrayList<>();
-        List<Integer> sameList = new ArrayList<>();
-        List<Integer> largerList = new ArrayList<>();
-
-        for (int ele : list) {
-            if (ele < pivot) {
-                smallerList.add(ele);
-            } else if (ele > pivot) {
-                largerList.add(ele);
+        // Method 2: Use QuickSelect
+        int left = 0, right = nums.length - 1;
+        while (left < right) {
+            int mid = partition(nums, left, right);
+            if (mid == k - 1) {
+                // return the specific number
+                return nums[mid];
+            } else if (mid > k - 1) {
+                right = mid - 1;
             } else {
-                sameList.add(ele);
+                left = mid + 1;
             }
         }
+        return nums[k - 1];
+    }
 
-        */
-        // recursive rule:
-        // focus on largerList then sameList then smallerList, because we would like to find kth Largest element.
-        // Recursion:
-        // If the left list's size is greater than or equal to k, it means that the kth largest element must be in the left list because all elements in it are larger than 
-        // the pivot. 
-        // So, it recursively calls quickSelect(left, k) to find the kth largest element in the left list.
-        // If the left list's size plus the mid list's size is less than k, it means that the kth largest element is in the right list. 
-        // We adjust k by subtracting the sizes of left and mid lists from it because we have already determined that these elements are not part of the kth largest. 
-        // So, we recursively call quickSelect(right, k - (left.size() + mid.size())) to find the kth largest element in the right list.
-        // If neither of the above conditions is met, it means that k falls within the mid list. In this case, we return the pivot because we've found the kth largest element, 
-        // which is the pivot itself.
-        */
-        // case1:
-        if (largerList.size() >= k) {
-            return quickSelect(largerList, k);
+    private int partition(int[] nums, int left, int right) {
+        int pivot = nums[left];
+        int i = left + 1, j = right;
+        while (i <= j) {
+            // methodology
+            // move all larger or equals element to the front of the nums array
+            // so i should be move one step forward.
+
+            // for right handside element, it shouldn't larger or equals to pivot, right?
+            // for left handside element, it shouldn't smaller or equals to the pivot too.
+            // so for the above cases, we need to swap them.
+            if (nums[j] >= pivot) {
+                swap(nums, i++, j);
+            } else if (nums[i] <= pivot) {
+                swap(nums, i, j--);
+            } else {
+                i++;
+                j--;
+            }
         }
-        // case 2:
-        if (largerList.size() + sameList.size() < k) {
-            return quickSelect(smallerList, k - largerList.size() - sameList.size());
-        } 
-        // case 3:
-        else {
-            return sameList.get(0);
-        }
+        swap(nums, left, j);
+        return j;
+    }
+
+    private void swap(int[] nums, int left, int right) {
+        int temp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = temp;
     }
 }  
