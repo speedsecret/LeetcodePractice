@@ -32,9 +32,13 @@ class Solution {
 
         for (int col = text2.length() - 1; col >= 0; col--) {
             for (int row = text1.length() - 1; row >= 0; row--) {
+                // if there is a match, we check the diagonal element
+                // and plus 1
                 if (text1.charAt(row) == text2.charAt(col)) {
                     dpGrid[row][col] = 1 + dpGrid[row + 1][col + 1];
-                } else {
+                } 
+                else {
+                // if there is not a match, we should check the maximum of the from its down element and its right handside element.
                     dpGrid[row][col] = Math.max(dpGrid[row + 1][col], dpGrid[row][col + 1]);
                 }
             }
