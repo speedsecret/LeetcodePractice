@@ -22,38 +22,47 @@ Explanation: There is no such common subsequence, so the result is 0.
 */
 
 // Methodology:
+// Using DP to started from bottom to the up corner.
 // Use 2D array to check each possible char accordingly.
 
 class Solution {
-    public int longestCommonSubsequence(String text1, String text2) {    
-        // If text1 doesn't reference the shortest string, swap them.
-        if (text2.length() < text1.length()) {
-            String temp = text1;
-            text1 = text2;
-            text2 = temp;
-        }
-        
-        // The previous and current column starts with all 0's and like 
-        // before is 1 more than the length of the first word.
-        int[] previous = new int[text1.length() + 1];
-        int[] current = new int[text1.length() + 1];
-        
-        // Iterate through each column, starting from the last one.
+    public int longestCommonSubsequence(String text1, String text2) {
+        // Method1: Initial DP
+        int[][] dpGrid = new int[text1.length() + 1][text2.length() + 1];
+
         for (int col = text2.length() - 1; col >= 0; col--) {
             for (int row = text1.length() - 1; row >= 0; row--) {
                 if (text1.charAt(row) == text2.charAt(col)) {
-                    current[row] = 1 + previous[row + 1];
+                    dpGrid[row][col] = 1 + dpGrid[row + 1][col + 1];
                 } else {
-                    current[row] = Math.max(previous[row], current[row + 1]);
+                    dpGrid[row][col] = Math.max(dpGrid[row + 1][col], dpGrid[row][col + 1]);
                 }
             }
-            // The current column becomes the previous one, and vice versa.
+        }
+        return dpGrid[0][0];
+        // Method2: Optimized DP with a better space complexity
+        // use DP to check their match relationships
+        /*
+        if (text1.length() > text2.length()) {
+            String temp = text2;
+            text1 = text2;
+            text2 = temp;
+        }
+        int[] previous = new int[text1.length() + 1];
+        int[] current = new int[text1.length() + 1];
+        for (int j = text2.length() - 1; j >= 0; j--) {
+            for (int i = text1.length() - 1; i >= 0; i--) {
+                if (text1.charAt(i) == text2.charAt(j)) {
+                    current[i] = 1 + previous[i + 1];
+                } else {
+                    current[i] = Math.max(previous[i], current[i + 1]);
+                }
+            }
             int[] temp = previous;
             previous = current;
             current = temp;
         }
-        
-    // The original problem's answer is in previous[0]. Return it.
-    return previous[0];
-  }
+        return previous[0];
+        */
+    }
 }
