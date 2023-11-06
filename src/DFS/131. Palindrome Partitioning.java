@@ -3,22 +3,14 @@
 https://leetcode.com/problems/palindrome-partitioning/
 
 Given a string s, partition s such that every 
-substring
- of the partition is a 
-palindrome
-. Return all possible palindrome partitioning of s.
-
- 
+substring of the partition is a palindrome. Return all possible palindrome partitioning of s.
 
 Example 1:
-
 Input: s = "aab"
 Output: [["a","a","b"],["aa","b"]]
 Example 2:
-
 Input: s = "a"
 Output: [["a"]]
- 
 
 Constraints:
 
@@ -32,24 +24,25 @@ s contains only lowercase English letters.
 class Solution {
     public List<List<String>> partition(String s) {
         List<List<String>> res = new ArrayList<>();
-        dfs(res, "", new ArrayList<>(), s, 0);
+        dfs(res, new ArrayList<>(), s, "", 0);
         return res;
     }
 
-    private void dfs(List<List<String>> res, String current, List<String> list, String s, int startIndex) {
+    private void dfs(List<List<String>> res, List<String> list, String s, String current, int startIndex) {
         // base case:
         if (startIndex == s.length()) {
             res.add(new ArrayList<>(list));
             return;
         }
 
-        // recursive rule:
+        // recursive rule
+        // for every possible index, we would need to check if one by one.
         for (int i = 1; i <= s.length(); i++) {
             if (startIndex + i <= s.length()) {
-                String currentStr = s.substring(startIndex, startIndex + i);
-                if (isValidPalindrome(currentStr)) {
-                    list.add(currentStr);
-                    dfs(res, current, list, s, startIndex + i);
+                String newString = s.substring(startIndex, startIndex + i);
+                if (isValidPalindrome(newString)) {
+                    list.add(newString);
+                    dfs(res, list, s, newString, startIndex + i);
                     list.remove(list.size() - 1);
                 }
             }
@@ -59,11 +52,9 @@ class Solution {
     private boolean isValidPalindrome(String str) {
         int left = 0, right = str.length() - 1;
         while (left < right) {
-            if (str.charAt(left) != str.charAt(right)) {
+            if (str.charAt(left++) != str.charAt(right--)) {
                 return false;
             }
-            left++;
-            right--;
         }
         return true;
     }
