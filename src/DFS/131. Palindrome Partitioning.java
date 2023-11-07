@@ -23,36 +23,36 @@ s contains only lowercase English letters.
 
 class Solution {
     public List<List<String>> partition(String s) {
+        // use DFS with backtracking
         List<List<String>> res = new ArrayList<>();
-        dfs(res, new ArrayList<>(), s, "", 0);
+        DFS(res, new ArrayList<>(), s, "", 0);
         return res;
     }
 
-    private void dfs(List<List<String>> res, List<String> list, String s, String current, int startIndex) {
-        // base case:
+    private void DFS(List<List<String>> res, List<String> list, String s, String current, int startIndex) {
+        // Base case
         if (startIndex == s.length()) {
             res.add(new ArrayList<>(list));
             return;
         }
-
-        // recursive rule
-        // for every possible index, we would need to check if one by one.
+        // Recursive rule: Try all possible partitions by iterating through the string
         for (int i = 1; i <= s.length(); i++) {
             if (startIndex + i <= s.length()) {
                 String newString = s.substring(startIndex, startIndex + i);
                 if (isValidPalindrome(newString)) {
                     list.add(newString);
-                    dfs(res, list, s, newString, startIndex + i);
+                    DFS(res, list, s, newString, startIndex + i);
                     list.remove(list.size() - 1);
                 }
             }
         }
+        return;
     }
 
-    private boolean isValidPalindrome(String str) {
-        int left = 0, right = str.length() - 1;
+    private boolean isValidPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
         while (left < right) {
-            if (str.charAt(left++) != str.charAt(right--)) {
+            if (s.charAt(left++) != s.charAt(right--)) {
                 return false;
             }
         }
