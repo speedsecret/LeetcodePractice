@@ -36,59 +36,68 @@ words[i] consists of only lowercase English letters.
 // Also, it is required to use the StringBuilder at the middle end part to construct a final String
 // Adding the validation check is necessary.
 // For words[i] only consists of lowercase english letter, int[] Degree = new int[26] would be sufficient.
+
 class Solution {
     public String alienOrder(String[] words) {
-        int[] inDegree = new int[26]; // To fit into the problem statement, it only consists of only lowercase English letters.
-        Map<Character, List<Character>> adjList = new HashMap<>();
+        // Step1: Initilize the adjMap and built up the adjMap by traversing the String[] words
+        // Step2: Use int[] inDegree to calculate how many character pointed to the current character
+        // Step3: BFS queue: Deque<Character> queue
 
-        // initilization
-        for (String word : words) {
-            for (char c : word.toCharArray()) {
-                adjList.putIfAbsent(c, new ArrayList<>());
+        // Step1: 
+        Map<Character, List<Character>> adjMap = new HashMap<>();
+        int[] inDegree = new int[26];
+
+        for (String str : words) {
+            for (char c : str.toCharArray()) {
+                if (!adjMap.containsKey(c)) {
+                    adjMap.put(c, new ArrayList<>());
+                }
             }
         }
 
-        // construct the adjList and inDegree
-        for (int i = 0; i < words.length - 1; i++) {
-            String word1 = words[i], word2 = words[i + 1];
-            if (word1.length() > word2.length() && word1.startsWith(word2)) {
+        for (int i = 1; i < words.length; i++) {
+            String pre = words[i - 1], cur = words[i];
+            // case 1:
+            if (pre.length() > cur.length() && pre.startsWith(cur)) {
                 return "";
             }
-            for (int j = 0; j < Math.min(word1.length(), word2.length()); j++) {
-                char pre = word1.charAt(j), cur = word2.charAt(j);
-                if (pre != cur) {
-                    adjList.get(pre).add(cur);
-                    inDegree[cur - 'a']++; // Update in-degree using the array
+            // case 2:
+            for (int j = 0; j < Math.min(pre.length(), cur.length()); j++) {
+                char preChar = pre.charAt(j), curChar = cur.charAt(j);
+                if (preChar != curChar) {
+                    adjMap.get(preChar).add(curChar);
+                    inDegree[curChar - 'a']++;
                     break;
                 }
             }
         }
 
-        // setup the queue
-        StringBuilder sb = new StringBuilder();
+        // Step2: 
         Deque<Character> queue = new ArrayDeque<>();
-
-        for (char c : adjList.keySet()) {
-            if (inDegree[c - 'a'] == 0) {
-                queue.offerLast(c);
+        for (char ch : adjMap.keySet()) {
+            if (inDegree[ch - 'a'] == 0) {
+                queue.offerLast(ch);
             }
         }
-
-        // process the queue dynamically and build up the StringBuilder.
+        // Step3: 
+        // Initilize a brand new StringBuilder
+        // And process the queue
+        StringBuilder sb = new StringBuilder();
         while (!queue.isEmpty()) {
-            char c = queue.pollFirst();
-            sb.append(c);
-
-            for (char nei : adjList.get(c)) {
-                inDegree[nei - 'a']--;
-                if (inDegree[nei - 'a'] == 0) {
-                    queue.offerLast(nei);
+            char preChar = queue.pollFirst();
+            // when we poll a character out of the queue
+            // we should just append it to the end of stringbuilder
+            sb.append(preChar);
+            for (char neiChar : adjMap.get(preChar)) {
+                inDegree[neiChar - 'a']--;
+                if (inDegree[neiChar - 'a'] == 0) {
+                    queue.offerLast(neiChar);
                 }
             }
         }
-
-        // validation check if can not met the requirement, we should return "".
-        if (sb.length() < adjList.size()) {
+        // Step4: focus on output.
+        // validate if the StringBuilder sb is valid.
+        if (sb.length() < adjMap.size()) {
             return "";
         }
         return sb.toString();
