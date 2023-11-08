@@ -38,6 +38,7 @@ class Solution {
         // For Method 2:
         int left = 0;
         int right = nums.length - 1;
+        // similar to the classicial binary search, it should including '==' signal here.
         while (left <= right) {
             int mid = (right - left) / 2 + left;
             // case1: find the target
@@ -48,7 +49,7 @@ class Solution {
             // case2: compare nums[mid] with leftBoundary, required the nums[mid] >= nums[left];
             // case2.1 target in [left, mid)
             // case2.2 else
-            // left part is sorted
+            // left part is sorted, "==" should be included.
             if (nums[mid] >= nums[left]) {
                 if (target >= nums[left] && target < nums[mid]) {
                     right = mid - 1;
@@ -60,6 +61,7 @@ class Solution {
             // case3: compare nums[mid] with rightBoundary, required the nums[mid] <= nums[right];
             // case3.1 target in (mid, right]
             // case3.2 else
+            // right part is sorted, "==" should be included.
             if (nums[mid] <= nums[right]) {
                 if (target <= nums[right] && target > nums[mid]) {
                     left = mid + 1;
