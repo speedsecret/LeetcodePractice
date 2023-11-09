@@ -59,6 +59,8 @@ class Solution {
     }
 
     private List<Integer> inorderTraversalIteratively(TreeNode root) {
+        // use a ArrayList<>() res and a stack to execute this implementation.
+        // not actively adding element to the res.
         List<Integer> res = new ArrayList<>();
         if (root == null) {
             return res;
