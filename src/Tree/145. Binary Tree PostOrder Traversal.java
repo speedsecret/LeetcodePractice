@@ -40,6 +40,12 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
  *     }
  * }
  */
+
+// summary for pre-order, in-order and post-order traversal
+// it is important to understand all we need to use is DataStructure stack.
+// for inorder, not proactively push root into the stack, 2 while loops
+// for preOrder, proactively push root into the stack, push cur.right into stack first
+// for postOrder, use linkedList<Integer> res, use res.addFirst() API, proactively push root into the stack, push cur.left into stack first
 class Solution {
     // Methodology:
     // Use a stack and a linkedList(output list)
