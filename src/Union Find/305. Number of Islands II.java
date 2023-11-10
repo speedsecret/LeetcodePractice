@@ -34,9 +34,9 @@ positions[i].length == 2
 // Use the unionfind
 // for each element in the positions
 // check if it is current water, if not
-// check with its all possible neighbor
-// if the neighbor is valid and it is land
-// and perform union fine
+// check with its all possible neighbors
+// if the neighbor is valid which means it is land
+// and then perform union find
 // if the current element and it is neighbor are different root
 // union them together as it is attached to each other
 // decrement currentLandCount once
@@ -106,12 +106,15 @@ public class Solution {
                     int newRow = row + dir[0];
                     int newCol = col + dir[1];
                     // the neighbor is already land too
-                    // the neighbor is within the boundary as well as it is already land too, we need to check if they belongs to the same root.
-                    if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && grid[newRow][newCol] == 1) {
+                    // the neighbor is within the boundary as well as it is already land too
+                    // we need to check if they belongs to the same root.
+                    if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n 
+                        && grid[newRow][newCol] == 1) {
                         int current = row * n + col;
                         int neighbor = newRow * n + newCol;
-                        // if the current and neighbor are from the diff root, so for now these two lands are jointed together, we might
-                        // want to decrement the isLandCount;
+                        // If the current and neighbor are from the diff root, 
+                        // So for now these two lands are jointed together
+                        // Decrement the isLandCount;
                         if (uf.find(current) != uf.find(neighbor)) {
                             uf.union(current, neighbor);
                             islandCount--;
