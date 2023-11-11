@@ -29,6 +29,7 @@ class Solution {
     private Set<List<Integer>> set = new HashSet<>();
     public List<List<Integer>> permuteUnique(int[] nums) {
         // sort and deduplication
+        // deduplication ---> hashSet.
         List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
         dfs(nums, res, new ArrayList<>(), 0);
