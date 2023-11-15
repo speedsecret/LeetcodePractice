@@ -42,6 +42,7 @@ class Solution {
         // Step1: Initilize the adjMap and built up the adjMap by traversing the String[] words
         // Step2: Use int[] inDegree to calculate how many character pointed to the current character
         // Step3: BFS queue: Deque<Character> queue
+        // Step4: Build a StringBuilder then do a validation check --> return the answer.
 
         // Step1: 
         Map<Character, List<Character>> adjMap = new HashMap<>();
