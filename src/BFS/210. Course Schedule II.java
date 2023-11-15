@@ -28,13 +28,18 @@ Output: [0]
 */
 
 // Methodology
-// adjList to construct the relationship between courses
-// hashMap record the course status: 
+// Instead of using inDegree array, BFS with a queue
+// DFS to check if cycle is existed is important, if cycle found, we can return false directly.
+
+// Steps break down:
+// Step1: adjList to construct the relationship between courses
+// Step2: create a new hashMap, which records the course status: 
 // 0 -> not visited
 // 1 -> processing
 // 2 -> visited
-
-// for DFS method, there are two terminal conditions.
+// step3: starts with each course, check if there is cycle exists, construct the LinkedList when
+// processing the course and its neighbors.
+// step4: convert the linkedList to an int array.
 
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
@@ -74,7 +79,9 @@ class Solution {
     }
 
     private boolean topoLogicalSort(List<List<Integer>> adj, int i, Map<Integer, Integer> visited, LinkedList<Integer> res) {
-        // base case
+        // base cases:
+        // 1. we got the course and it has been processed successfully, return true;
+        // 2. we got the course and it is current under processing, so return false;
         if (visited.get(i) == 2) {
             return true;
         } else if (visited.get(i) == 1) {
@@ -87,6 +94,7 @@ class Solution {
                 return false;
             }
         }
+        // record the current node has been processed.
         visited.put(i, 2);
         res.addFirst(i);
         return true;
