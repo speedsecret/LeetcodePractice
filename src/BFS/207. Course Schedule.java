@@ -29,6 +29,13 @@ should also have finished course 1. So it is impossible.
 
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // step1: Initilize the adjList to set up a directed graph
+        // step2: set up the inDegree array, int[] inDegree = new int[numbers];
+        // step3: process the prerequisites and fulfill the inDegre and adjList
+        // step4: BFS, put all valid inDegree[i] == 0 into the queue
+        // step5: calculate the nums of actual course and validate the final result.
+
+        
         // step1: setting up adjacent list, from pre --> cur
         List<List<Integer>> adj = new ArrayList<>(numCourses);
         for (int i = 0; i < numCourses; i++) {
@@ -58,6 +65,8 @@ class Solution {
         // BFS
         while (!queue.isEmpty()) {
             int preCourse = queue.pollLast();
+            // Similar to Leetcode 269, when we need to construct a StringBuilder as final output
+            // we count how many courses we visited so far.
             visited++;
 
             for (int neighbor: adj.get(preCourse)) {
