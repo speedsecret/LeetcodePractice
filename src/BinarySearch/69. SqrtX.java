@@ -19,6 +19,11 @@ Output: 2
 Explanation: The square root of 8 is 2.82842..., and since we round it down to the nearest integer, 2 is returned.
 */
 
+// Methodology
+// Binary Search, left = 1, right = x;
+// check the 'mid' and compare 'mid' with 'x / mid';
+// return right at the end.
+
 class Solution {
     public int mySqrt(int x) {
         // binary Search to find the smaller sqrt
