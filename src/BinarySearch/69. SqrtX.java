@@ -42,6 +42,9 @@ class Solution {
                 right = mid - 1;
             }
         }
+        // The binary search continues until left is greater than right, at which point, 
+        // right represents the largest integer whose square is less than or equal to x
+        // which is the square root rounded down.
         return right;
     }
 }
