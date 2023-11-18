@@ -37,48 +37,50 @@ s and p consist of lowercase English letters.
 // Keep the return list and kept adding the left index into the list.
 
 class Solution {
+    // Methodology
+    // Use a hashMap to store all the characters and its frequency
+    // for String p, then use two pointers left and right
+    // to maintaining a size p slinding windown so we can extract the starting indices if there are matches.
     public List<Integer> findAnagrams(String s, String p) {
-        // methodology
-        // maintaing a sliding window and keep the window size as the length of p
-        // loop the String s from left all the way to the end - p.length();
         List<Integer> res = new ArrayList<>();
-        if (p.length() > s.length()) {
+        if (s.length() < p.length()) {
             return res;
         }
         int left = 0, right = 0;
-        // get the smaller String chunk into hashMap pieces
-        Map<Character, Integer> pMap = getMap(p);
         int match = 0;
-        while (right < s.length() && left <= s.length() - p.length()) {
-            char c = s.charAt(right++);
-            Integer count = pMap.get(c);
+        Map<Character, Integer> map = getMap(p);
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            Integer count = map.get(c);
             if (count != null) {
-                pMap.put(c, count - 1);
+                map.put(c, count - 1);
                 if (count == 1) {
                     match++;
                 }
             }
-            if (match == pMap.size()) {
-                res.add(left);
-            }
-            if (right > p.length() - 1) {
-                c = s.charAt(left++);
-                count = pMap.get(c);
+            if (right >= p.length()) {
+                c = s.charAt(left);
+                count = map.get(c);
                 if (count != null) {
-                    pMap.put(c, count + 1);
+                    map.put(c, count + 1);
                     if (count == 0) {
                         match--;
                     }
                 }
+                left++;
             }
+            if (match == map.size()) {
+                res.add(left);
+            }
+            right++;
         }
         return res;
     }
 
-    private Map<Character, Integer> getMap(String s) {
+    private Map<Character, Integer> getMap(String str) {
         Map<Character, Integer> map = new HashMap<>();
-        for (char ch : s.toCharArray()) {
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        for (char c : str.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
         return map;
     }
