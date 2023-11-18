@@ -25,43 +25,37 @@ Explanation: One possible way is : left -> down -> left -> down -> right -> down
 // which has not been visited is returning true
 
 class Solution {
-    public static final int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    // DFS with a boolean matrix
+    private int[][] dirs = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
     public boolean hasPath(int[][] maze, int[] start, int[] destination) {
-        // DFS
         boolean[][] visited = new boolean[maze.length][maze[0].length];
-        return DFS(maze, start[0], start[1], destination, visited);
+        return dfs(visited, maze, start[0], start[1], destination);
     }
 
-    private boolean DFS(int[][] maze, int row, int col, int[] destination, boolean[][] visited) {
-        // base case 1 --> return false
-        if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length || maze[row][col] == 1 || visited[row][col]) {
+    private boolean dfs(boolean[][] visited, int[][] maze, int row, int col, int[] dest) {
+        // base case:
+        // also check if the current spot has been visited before, if so just return false
+        if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length
+            || maze[row][col] == 1 || visited[row][col]) {
             return false;
-        }
-        // base case 2 which means we can reach out to the dest --> return true
-        if (row == destination[0] && col == destination[1]) {
+        } 
+        if (row == dest[0] && col == dest[1]) {
             return true;
         }
-
-        // mark current spot has been visited
-        // also as we won't back track the spot we visited, so we don't reset it back to false
-        // Once you change direction, you won't return to the previous cell because there's no need to backtrack in the maze-solving context.
-        visited[curRow][curCol] = true;
-        for (int[] dir : directions) {
+        // recursive call:
+        visited[row][col] = true;
+        for (int[] dir : dirs) {
             int neiRow = row + dir[0];
             int neiCol = col + dir[1];
 
-            // the ball wouldn't stop until it hit the wall
             while (neiRow >= 0 && neiRow < maze.length && neiCol >= 0 && neiCol < maze[0].length && maze[neiRow][neiCol] == 0) {
-                neiRow = neiRow + dir[0];
-                neiCol = neiCol + dir[1];
+                neiRow += dir[0];
+                neiCol += dir[1];
             }
 
-            // back one step to make sure that spot is within the boundary.
             neiRow -= dir[0];
             neiCol -= dir[1];
-
-            // To check if it has been visited && recursively check neighbor
-            if (!visited[neiRow][neiCol] && DFS(maze, neiRow, neiCol, destination, visited)) {
+            if (dfs(visited, maze, neiRow, neiCol, dest)) {
                 return true;
             }
         }
@@ -69,4 +63,43 @@ class Solution {
     }
 }
 
+/*
+class Solution {
+    // DFS with a boolean matrix
+    private int[][] dirs = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+    public boolean hasPath(int[][] maze, int[] start, int[] destination) {
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        return dfs(visited, maze, start[0], start[1], destination);
+    }
 
+    private boolean dfs(boolean[][] visited, int[][] maze, int row, int col, int[] dest) {
+        // base case:
+        // I am not care if this node has been visited before, as it can still be a valid part of a path
+        if (row < 0 || row >= maze.length || col < 0 || col >= maze[0].length || maze[row][col] == 1) {
+            return false;
+        } 
+        if (row == dest[0] && col == dest[1]) {
+            return true;
+        }
+        // recursive call:
+        visited[row][col] = true;
+        for (int[] dir : dirs) {
+            int neiRow = row + dir[0];
+            int neiCol = col + dir[1];
+
+            while (neiRow >= 0 && neiRow < maze.length && neiCol >= 0 && neiCol < maze[0].length && maze[neiRow][neiCol] == 0) {
+                neiRow += dir[0];
+                neiCol += dir[1];
+            }
+
+            neiRow -= dir[0];
+            neiCol -= dir[1];
+            // double check if the visited[neiRow][neiCol] is false.
+            if (!visited[neiRow][neiCol] && dfs(visited, maze, neiRow, neiCol, dest)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+*/
