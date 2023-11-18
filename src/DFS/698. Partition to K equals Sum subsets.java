@@ -19,6 +19,17 @@ The frequency of each element is in the range [1, 4].
 */
 
 public class Solution {
+    // Methodology
+    // Similar to Q:416, calculate the sum is important.
+    // check the edge case
+    // if failed, just return false;
+    // if true, sort the array
+    // started the DFS recursive call.
+    // there are few parameters for the DFS:
+    // 1. StartIndex (from the largest to 0)
+    // 2. new int[] array(CandidateNumsArray)
+    // 3. targetSum
+    // 4. nums
     public boolean canPartitionKSubsets(int[] nums, int k) {
         int sum = 0;
         for (int num : nums) {
