@@ -22,23 +22,28 @@ Constraints:
 1 <= nums[i] <= 100
 */
 
-
 class Solution {
     public boolean canPartition(int[] nums) {
-        if (nums.length < 2) {
-            return false;
-        }
+        // find if it is possible to find two subsets that consist of the same sum/2
+        // methodology:
+        // 1. calculate sum first
+        // 2. check the edge case to see if the sum can be divide to 2 parts evenly
+        // if (sum % 2 != 0) return false directly.
+        // 3. use a boolean[] dp to check all possible subset part.(it is a bit of redundancy but it is proves high-quality.)
+        // 4. loop the nums array, and check each possible subset combination by traversing the element from sum to 1.
+        // 5. return false if not found a valid pair.
 
         int sum = 0;
-        for (int ele : nums) {
-            sum += ele;
+        for (int num : nums) {
+            sum += num;
         }
-        // there can not exist a pair of same sum subsets.
+        // edge case check
         if (sum % 2 != 0) {
             return false;
         }
-        // dp[value] represent if we could find some elements consisting subsets to make the sum as value
         boolean[] dp = new boolean[sum + 1];
+        // key initialization
+        // we knew it is always true to split 0 into two empty subsets, right?
         dp[0] = true;
         for (int num : nums) {
             for (int i = sum; i >= 0; i--) {
@@ -46,11 +51,10 @@ class Solution {
                     dp[i + num] = true;
                 }
             }
-            // always to check if there is any possibilities that the nums can be divided into two parts.
             if (dp[sum / 2]) {
                 return true;
             }
         }
-        return dp[sum / 2];
+        return false;
     }
 }
