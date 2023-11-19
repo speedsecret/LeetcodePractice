@@ -32,22 +32,21 @@ Follow-up: If the string data type is mutable in your language, can you solve it
 
 class Solution {
     public String reverseWords(String s) {
+        // remove the leading and trailing space if any
+        // then reverse the whole String s first
+        // finally reverse each single string in the reversed String s
         s = reverse(s.trim());
         int start = 0, end = 0;
-        // dlrow olleh
-        // s
-        //      e
         String newString = "";
         while (end < s.length()) {
             if (end == 0 || s.charAt(end - 1) == ' ') {
                 while (end < s.length() && s.charAt(end) != ' ') {
                     end++;
                 }
-                // the small trick here that we can optimized is to 
-                // remodel the reverse method, we can pass three parameters into it
-                // reverseFunction(s, leftIndex, rightIndex)
+                // a very smart helper function has been reused here.
                 newString += reverse(s.substring(start, end)) + " ";
             } else {
+                // update start
                 while (end < s.length() && s.charAt(end) == ' ') {
                     end++;
                 }
@@ -60,17 +59,15 @@ class Solution {
     }
 
     private String reverse(String s) {
+        char[] array = s.toCharArray();
         int left = 0, right = s.length() - 1;
-        char[] charArray = s.toCharArray();
         while (left < right) {
-            swap(charArray, left++, right--);
+            char temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
+            left++;
+            right--;
         }
-        return String.valueOf(charArray);
-    }
-
-    private void swap(char[] array, int left, int right) {
-        char c = array[left];
-        array[left] = array[right];
-        array[right] = c;
+        return String.valueOf(array);
     }
 }
