@@ -25,34 +25,41 @@ Follow up: Your algorithm's time complexity must be better than O(n log n), wher
 
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> freqMap = getFreqMap(nums);
-        // construct a distinct int array
+        // As it required to return the most k frequent
+        // It is critical to make a sorted int[] array from largest to the smallest
+        // Applied this approach into the helper function.
+        Map<Integer, Integer> freqMap = getMap(nums);
         int[] elements = freqMap.keySet().stream().mapToInt(Integer::intValue).toArray();
-        // use quickSelect
         int left = 0, right = elements.length - 1;
         while (left < right) {
-            int mid = partition(elements, freqMap, left, right);
-            if (mid > k - 1 ) {
-                right = mid - 1;
-            } else if (mid < k - 1){
+            int mid = partition(freqMap, elements, left, right);
+            if (mid == k - 1) {
+                break;
+            } else if (mid < k - 1) {
                 left = mid + 1;
             } else {
-                break;
+                right = mid - 1;
             }
         }
         return Arrays.copyOfRange(elements, 0, k);
     }
 
-    private int partition(int[] elements, Map<Integer, Integer> map, int left, int right) {
-        int pivotIndex = elements[left];
-        int pivot = map.get(pivotIndex);
+    private int partition(Map<Integer, Integer> freqMap, int[] elements, int left, int right) {
+        int pivot = freqMap.get(elements[left]);
         int i = left + 1, j = right;
         while (i <= j) {
-            if (map.get(elements[j]) >= pivot) {
+            // if the larger or equal element in the right hand side,
+            // remove it from the right to the front.
+            if (freqMap.get(elements[j]) >= pivot) {
                 swap(elements, i++, j);
-            } else if (map.get(elements[j]) <= pivot) {
+            } 
+            // if the smaller or equal element in the left hand side,
+            // remove it from the front to the end.
+            else if (freqMap.get(elements[i]) <= pivot) {
                 swap(elements, i, j--);
-            } else {
+            } 
+            // otherwise, either leftIndex and rightIndex are well stand in their pos.
+            else {
                 i++;
                 j--;
             }
@@ -61,7 +68,7 @@ class Solution {
         return j;
     }
 
-    private Map<Integer, Integer> getFreqMap(int[] nums) {
+    private Map<Integer, Integer> getMap(int[] nums) {
         Map<Integer, Integer> freqMap = new HashMap<>();
         for (int ele : nums) {
             freqMap.put(ele, freqMap.getOrDefault(ele, 0) + 1);
