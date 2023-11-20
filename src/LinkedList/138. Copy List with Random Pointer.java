@@ -46,23 +46,25 @@ class Node {
 
 class Solution {
     public Node copyRandomList(Node head) {
-        // Method2: Use O(n) time complexity and O(1) space complexity;
-        // first, create new nodes and insert them after the original linkedList
-        // second, link random pointers for the new ndoes
-        // third, separate the old nodes and new nodes
+        // three passes
+        // firstly, construct a long list on the top of the current linkedlist, which double the previous size
+        // secondly, construct the new random list;
+        // third(finally), split the long list to two lists, one is original list, the second is the new list
         if (head == null) {
-            return null;
+            return head;
         }
 
-        // first pass:
+        // the first pass
         Node current = head;
         while (current != null) {
-            Node copy = new Node(current.val);
-            copy.next = current.next;
-            current.next = copy;
-            current = copy.next;
+            Node newNode = new Node(current.val);
+            newNode.next = current.next;
+            current.next = newNode;
+            // so this steps skip two nodes at a time.
+            current = newNode.next;
         }
-        // second pass:
+
+        // the second pass
         current = head;
         while (current != null) {
             if (current.random != null) {
@@ -70,21 +72,21 @@ class Solution {
             }
             current = current.next.next;
         }
-        // third pass:
-        Node newNode = head.next;
+
+        // the third pass
         current = head;
-        Node newCurrent = newNode;
+        Node newHead = current.next;
+        Node resultHead = newHead;
         while (current != null) {
             current.next = current.next.next;
-            if (newCurrent.next != null) {
-                newCurrent.next = newCurrent.next.next;
+            // need to consider the status when the newHead is the last one element in the pre-split list
+            if (newHead.next != null) {
+                newHead.next = newHead.next.next;
+                newHead = newHead.next;
             }
             current = current.next;
-            newCurrent = newCurrent.next;
         }
-        return newNode;
-        
-        // return copyRandomListByHashMap(head);
+        return resultHead;
     }
 
     // Method1: Intuition:
