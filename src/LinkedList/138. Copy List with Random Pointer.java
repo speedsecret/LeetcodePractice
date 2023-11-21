@@ -55,6 +55,7 @@ class Solution {
         }
 
         // the first pass
+        // the goal is to finish the preparation for the new linkedList construction
         Node current = head;
         while (current != null) {
             Node newNode = new Node(current.val);
@@ -65,6 +66,7 @@ class Solution {
         }
 
         // the second pass
+        // the goal is to complete the random pointer for the copyed new list.
         current = head;
         while (current != null) {
             if (current.random != null) {
@@ -74,6 +76,7 @@ class Solution {
         }
 
         // the third pass
+        // the goal is to split the current linked list into one list and then return the copyed one.
         current = head;
         Node newHead = current.next;
         Node resultHead = newHead;
