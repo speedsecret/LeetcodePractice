@@ -24,38 +24,33 @@ n == height.length
 // when curLeft < curRight, check the curLeft with LeftMax, vice verse when curLeft > curRight
 
 public class TrapMaxRain {
-    public static int trap(int[] height) {
-        // use two pointers so we can check the height slot by slot.
-        // then maintaining two variables to record the max raining level
-        if (height == null || height.length <= 2) {
+   public int trap(int[] height) {
+        // edge case check:
+        if (height.length < 3) {
             return 0;
         }
-        int leftMax = 0;
-        int rightMax = 0;
-        int curLeft = 0;
-        int curRight = height.length - 1;
-        int result = 0;
-        while (curLeft < curRight) {
-            // case 1:
-            if (height[curLeft] < height[curRight]) {
-                if (height[curLeft] > leftMax) {
-                    leftMax = height[curLeft];
+        int leftMax = 0, rightMax = 0, leftIndex = 0, rightIndex = height.length - 1, res = 0;
+        // this terminal condition must be leftIndex < rightIndex
+        // once they are the same, there is no chance of adding more water into it
+        while (leftIndex < rightIndex) {
+            if (height[leftIndex] <= height[rightIndex]) {
+                if (height[leftIndex] > leftMax) {
+                    leftMax = height[leftIndex];
                 } else {
-                    result += leftMax - height[curLeft];
+                    res += leftMax - height[leftIndex];
                 }
-                curLeft++;
-            }
-            // case 2:
-            else {
-                if (height[curRight] > rightMax) {
-                    rightMax = height[curRight];
+                leftIndex++;
+            } else {
+                if (height[rightIndex] > rightMax) {
+                    // then we need to update the rightMax index
+                    rightMax = height[rightIndex];
                 } else {
-                    result += rightMax - height[curRight];
+                    res += rightMax - height[rightIndex];
                 }
-                curRight--;
+                rightIndex--;
             }
         }
-        return result;
+        return res;
     }
 
     public static void main(String[] args) {
