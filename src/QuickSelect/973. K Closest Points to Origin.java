@@ -52,56 +52,65 @@ class Solution {
     //     return res;
     // }
 
-    public int[][] kClosest(int[][] points, int K) {
-        //method2 : use quickSelect:
-        //only focusing on one element not focus on the whole array;
-        //The quickSelect function is used to find the Kth smallest element. The K - 1 is used because array indices are zero-based, which means that the first element is at index 0, the second element at index 1, and so on.
-        quickSelect(points, 0, points.length - 1, K - 1);
-        int[][] ans = new int[K][];
-        for (int i = 0; i < K; i++)
-            ans[i] = points[i];
-        return ans;
+    public int[][] kClosest(int[][] points, int k) {
+        // use quickSelect T: O(n)
+        // create a place holder 2-D array
+        int[][] res = new int[k][2];
+        quickSelect(points, 0, points.length - 1, k - 1);
+        // copy and paste all sorted elements from index = 0 to index = k -1
+        for (int i = 0; i < k; i++) {
+            res[i][0] = points[i][0];
+            res[i][1] = points[i][1];
+        }
+        // return the placeHolder 2-D array
+        return res;
     }
-   
-    private void quickSelect(int[][] points, int i, int j, int target) {
-        int mid = partition(points, i, j);
-        if (mid == target) {
+
+    private void quickSelect(int[][] points, int left, int right, int target) {
+        // partition is the crucial step here
+        int pivotIndex = partition(points, left, right);
+        // case 1:
+        if (pivotIndex == target) {
             return;
-        } else if (mid > target) {
-            quickSelect(points, i, mid - 1, target);
-        } else {
-            quickSelect(points, mid + 1, j, target);
+        }
+        // case 2:
+        // we don't have enough element to fulfill the final res
+        else if (pivotIndex < target) {
+            quickSelect(points, pivotIndex + 1, right, target);
+        } 
+        // case 3:
+        // we can safely discard the right part of the array
+        else {
+            quickSelect(points, left, pivotIndex - 1, target);
         }
     }
-   
-    private int partition(int[][] points, int i, int j) {
-        int[] pivotIndex = points[j];
-        int pivot = dist(pivotIndex);
-        int start = i;
-        int end = j - 1;
+
+    // the goal is to having all k elements seat in index from 0 to k - 1;
+    private int partition(int[][]points, int left, int right) {
+        int pivot = dist(points[right]);
+        int start = left;
+        int end = right - 1;
         while (start <= end) {
             if (dist(points[start]) < pivot) {
                 start++;
-            } else if (dist(points[end]) >= pivot) {
+            } else if (dist(points[end]) > pivot) {
                 end--;
             } else {
                 swap(points, start++, end--);
             }
         }
-        swap(points, start, j);
+        // swap the pivot element back
+        swap(points, start, right);
         return start;
     }
-   
-    private void swap(int[][] points, int i, int j) {
-        int[] tmp = points[i];
-        points[i] = points[j];
-        points[j] = tmp;
+
+    private int dist(int[] arr) {
+        return arr[0] * arr[0] + arr[1] * arr[1];
     }
-   
-    private int dist(int[] p) {
-        return p[0] * p[0] + p[1] * p[1];
+    
+    private void swap(int[][] points, int left, int right) {
+        int[] tempArr = points[left];
+        points[left] = points[right];
+        points[right] = tempArr;
     }
 }
-
-
-
