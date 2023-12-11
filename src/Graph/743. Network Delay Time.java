@@ -98,3 +98,61 @@ class Solution {
         return answer == Integer.MAX_VALUE ? -1 : answer;
     }
 }
+
+/*
+Dec. 10th 2023
+// Methodology
+// Using MinHeap to keep track the current point, the travel time needed from start point to end point.
+// Creating an adjMap to store the direct graph.
+
+class Solution {
+    public int networkDelayTime(int[][] times, int n, int k) {
+        Map<Integer, List<int[]>> adjMap = new HashMap<>();
+        for (int i = 0; i < times.length; i++) {
+            int[] time = times[i];
+            int src = time[0];
+            int dest = time[1];
+            int travelTime = time[2];
+            adjMap.computeIfAbsent(src, key -> new ArrayList<>()).add(new int[]{dest, travelTime});
+        }      
+
+        // create an array with size of (n + 1), why?
+        // so we can use index i to present the info {src, dest, travelTime}
+        // as we already know the starting point is the index itself, we could use an int[] array to represent it
+        int[] signalArray = new int[n + 1];
+        Arrays.fill(signalArray, Integer.MAX_VALUE);
+        // it is always 0 travel time since we started from the starting point.
+        signalArray[k] = 0;
+
+        // create a minHeap to store each possible travel State
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+        minHeap.add(new int[]{k, 0});
+        while (!minHeap.isEmpty()) {
+            int[] preState = minHeap.poll();
+            int preNode = preState[0];
+            int preTravelTime = preState[1];
+
+            // if the signalArray[preNode] already smaller than preTravelTime
+            // or there isn't exist such a node in the adjMap, we just skip it.
+            if (signalArray[preNode] < preTravelTime || !adjMap.containsKey(preNode)) {
+                continue;
+            }
+
+            // check the preNode's neighbor
+            for (int[] nei : adjMap.get(preNode)) {
+                int neiNode = nei[0];
+                int neiTravelTime = nei[1];
+                if (signalArray[preNode] + neiTravelTime < signalArray[neiNode]) {
+                    signalArray[neiNode] = signalArray[preNode] + neiTravelTime;
+                    minHeap.add(new int[]{neiNode, signalArray[neiNode]});
+                }
+            }
+        }
+        int answer = Integer.MIN_VALUE;
+        for (int i = 1; i <= n; i++) {
+            answer = Math.max(signalArray[i], answer);
+        }
+        return answer == Integer.MAX_VALUE ? -1 : answer;
+    }
+}
+*/
