@@ -35,39 +35,47 @@ Constraints:
 word1 and word2 consist of lowercase English letters.
 */
 
-
 class Solution {
-    // https://www.youtube.com/watch?v=b6AGUjqIPsA
     public int minDistance(String word1, String word2) {
-        int word1Length = word1.length(), word2Length = word2.length();
-        if (word1Length == 0) {
-            return word2Length;
+        // use DP with a 2-D int matrix
+        // why, there are three possiblities, the first is adding operation
+        // the second is removing operations, the final one is delete operation
+
+        // check edge case first
+        // then we would need to check when either word1 is empty or word2 is empty cases.
+
+        if (word1.length() == 0) {
+            return word2.length();
         }
-        if (word2Length == 0) {
-            return word1Length;
+        if (word2.length() == 0) {
+            return word1.length();
         }
 
-        int[][] grid = new int[word1Length + 1][word2Length + 1];
-        // update the first row
-        // update the first col
-        for (int i = 1; i <= word1Length; i++) {
-            grid[i][0] = grid[i - 1][0] + 1;
+        // the newly created int[][] matrix should be with length equals to word1.length() + 1
+        // with width length equals to word2.length() + 1
+        int[][] dp = new int[word1.length() + 1][word2.length() + 1];
+        // for all rows, in another word, for the vertical line:
+        for (int i = 1; i <= word1.length(); i++) {
+            dp[i][0] = i;
         }
-        for (int j = 1; j <= word2Length; j++) {
-            grid[0][j] = grid[0][j - 1] + 1;
+        // for all coloumns, in another word, for the horizontal line:
+        for (int j = 1; j <= word2.length(); j++) {
+            dp[0][j] = j;
         }
-        for (int word1Index = 1; word1Index <= word1Length; word1Index++) {
-            for (int word2Index = 1; word2Index <= word2Length; word2Index++) {
-                // check if two characters are the same
-                if (word1.charAt(word1Index - 1) == word2.charAt(word2Index - 1)) {
-                    // so just copy the diagonal direction of cell into the current one.
-                    grid[word1Index][word2Index] = grid[word1Index - 1][word2Index - 1];
-                } else {
-                    grid[word1Index][word2Index] = Math.min(grid[word1Index - 1][word2Index],
-                                        Math.min(grid[word1Index][word2Index - 1], grid[word1Index - 1][word2Index - 1])) + 1;
+        for (int i = 1; i <= word1.length(); i++) {
+            for (int j = 1; j <= word2.length(); j++) {
+                // case1:
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    // do nothing
+                    // just copy whatever the value in the anti-diagnoal cell
+                    dp[i][j] = dp[i - 1][j - 1];
+                } 
+                // case2:
+                else {
+                    dp[i][j] = Math.min(dp[i][j - 1], Math.min(dp[i - 1][j], dp[i - 1][j - 1])) + 1;
                 }
             }
         }
-        return grid[word1Length][word2Length];
+        return dp[word1.length()][word2.length()];
     }
 }
