@@ -57,45 +57,46 @@ class Solution {
             return 0;
         
         long dp[] = new long[s.length() + 1];
-		//you can decode empty string in 1 way that is empty string ""
+	// you can decode empty string in 1 way that is empty string ""
         dp[0] = 1;
         dp[1] = s.charAt(0) == '*' ? 9 : 1;
+	int MOD = (int)1e9 + 7;
         
         // we need to check the dp[i - 2] hence we started from index == 2;
         for (int i = 2; i < dp.length; i++) {
             // the current char is actually the index from 1;
             char currChar = s.charAt(i - 1);
             
-        //1. Considering only currChar, check how many decoding ways
+            //1. Considering only currChar, check how many decoding ways
             //check how many ways are possible if we consider only currChar
             long withoutPrev = 0;
             //it means currChar could be anything 1-9, so it will add 9 times more ways to decode to previos string from (0 to i - 1)
             if(currChar == '*'){
                 withoutPrev = dp[i - 1] * 9;
             }
-            //currChar can be decoded individually if it is between 1- 9, or in other words if currChar is 0 means it cannot make a valid decoing by itself so let withOutPrev remain 0
+            //currChar can be decoded individually if it is between 1 - 9, or in other words if currChar is 0 means it cannot make a valid decoing by itself so let withOutPrev remain 0
             else if(currChar != '0'){
                 withoutPrev = dp[i - 1];
             }
             
-        //2. Now check how many decoing ways it adds when we consider prevChar. There are 3 cases based on the value of prevChar
+            //2. Now check how many decoding ways it adds when we consider prevChar. There are 3 cases based on the value of prevChar
             char prevChar = s.charAt(i - 2);
             long withPrev = 0;
             
             if(prevChar == '1'){
                 //if prevChar == 1 and currChar == '*', means we can have 9 times more ways in addition to dp[i - 2], which are 11-19
-                if(currChar == '*'){
+                if (currChar == '*') {
                     withPrev = dp[i - 2] * 9;
                 }
                 //if prevChar == 1 and currentChar is in range (0 - 9), means it cannot add anything to previous decoding ways hence its value will be dp[i - 2]
-                else{
+                else {
                     withPrev = dp[i - 2];
                 }
             }
             
-            else if(prevChar == '2'){
+            else if (prevChar == '2') {
                 //if prevChar == 2 and currChar == '*', means we can have 6 times more ways in addition to dp[i - 2], which are 21-26
-                if(currChar == '*'){
+                if (currChar == '*') {
                     withPrev = dp[i - 2] * 6;
                 }
                 //if prevChar == 2 and currentChar is in range (0 - 6), means it cannot add anything to previous decoding ways hence its value will be dp[i - 2]
@@ -120,9 +121,9 @@ class Solution {
                 }
             }
             
-        //3. finally add it to dp table by taking mod
-			//Intermediate results can also overflow, thats why mod the results for subproblems
-            dp[i] = (withoutPrev + withPrev) % 1000000007;
+            //3. finally add it to dp table by taking mod
+            //Intermediate results can also overflow, thats why mod the results for subproblems
+            dp[i] = (withoutPrev + withPrev) % MOD;
             
         }
         
