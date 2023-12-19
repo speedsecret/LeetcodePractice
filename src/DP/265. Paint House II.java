@@ -44,46 +44,41 @@ Please solve it in O(nk) runtime with O(1) space complexity --> need to update t
 
 class Solution {
     public int minCostII(int[][] costs) {
-        if (costs.length == 0) {
-            return 0;
-        }
-        int k = costs[0].length, n = costs.length;
-        // traverse the house in each possible color
+        // use dynamica programming
+        int n = costs.length, k = costs[0].length;
         for (int house = 1; house < n; house++) {
-            // find the minColor and the secondMinColor in the previous row
-            int minColor = -1, secondMinColor = -1;
-            // loop all the colors and update the minColor for this house
-            // prepare for the calculation
+            int minCostColor = -1, secondMinCostColor = -1;
             for (int color = 0; color < k; color++) {
                 int cost = costs[house - 1][color];
-                // ****** use cost to compare with costs[house - 1][minColor] and costs[house - 1][color]
-                if (minColor == -1 || cost < costs[house - 1][minColor]) {
-                    secondMinColor = minColor;
-                    minColor = color;
-                } else if (secondMinColor == -1 || cost < costs[house - 1][secondMinColor]) {
-                    secondMinColor = color;
+                // the first visited minCostColor
+                // or find a cheaper color, even cheap than minCostColor
+                if (minCostColor == -1 || cost < costs[house - 1][minCostColor]) {
+                    secondMinCostColor = minCostColor;
+                    minCostColor = color;
+                } 
+                // the first time visited secondMinCostColor
+                // or find a cheaper color, is expansive then costs[house - 1][minCostColor]
+                // but cheaper than costs[house - 1][secondMinCostColor]
+                else if (secondMinCostColor == -1 || cost < costs[house - 1][secondMinCostColor]) {
+                    secondMinCostColor = color;
                 }
             }
 
-            // calculate the new costs for the current row
-            // if the currentColor equals to the minColor, update this level of secondMinColor costs by adding
-            // the last level of color into the current one.
-            // else, adding the level of minColor costs.
+            // then update the current layer of painting cost
             for (int color = 0; color < k; color++) {
-                if (color == minColor) {
-                    costs[house][color] += costs[house - 1][secondMinColor];
+                if (color == minCostColor) {
+                    costs[house][color] += costs[house - 1][secondMinCostColor];
                 } else {
-                    costs[house][color] += costs[house - 1][minColor];
+                    costs[house][color] += costs[house - 1][minCostColor];
                 }
             }
         }
 
-        int min = Integer.MAX_VALUE;
-        // check each cell in the bottom row
-        // return min
-        for (int c : costs[n - 1]) {
-            min = Math.min(min, c);
+        // loop the costs array
+        int ans = Integer.MAX_VALUE;
+        for (int ele : costs[n - 1]) {
+            ans = Math.min(ele, ans);
         }
-        return min;
+        return ans;
     }
 }
