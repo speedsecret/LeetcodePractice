@@ -50,48 +50,66 @@ The number of nodes in the tree is in the range [1, 104].
 // (not just its left child) is at a greater depth than previously recorded.
 // In this case, it updates ans[0] with the current level and ans[1] with the value of the current node (root.val).
 
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
+    // Method1: use DFS 
+    // base case: if the root == null ---> we should directly return and do nothing
+    // recursive rule:
+    // actively check the root.left --> compare if the level + 1 is larger than the current arr[0](level), if so, update the value;
+    // processing the root.right (if root.right != null);
+    // check the current level:
+    // if level > arr[0] --> if so, update the arr
+    private int[] arr;
     public int findBottomLeftValue(TreeNode root) {
-        // [Preferred] Method DFS, with an int[] arr, arr[0] = level, arr[1] = candidate.val
-        int[] ans = {0, root.val};
-        DFS(root, ans, 0);        
-        return ans[1];
+        arr = new int[]{0, root.val};
+        dfs(0, root);
+        return arr[1];
     }
 
-    // Preferred Method: DFS
-    // check left and right subTree recursively
-    private void DFS(TreeNode root, int[] ans, int level) {
-        // base case
+    private void dfs(int level, TreeNode root) {
+        // base case:
         if (root == null) {
             return;
         }
 
-        // check with the left subTree
-        // to see if the root.left is non-null
-        // if it is, then if the current level + 1 larger than previous ans, if so, we update the res
+        // recursive rule:
         if (root.left != null) {
-            if (level + 1 > ans[0]) {
-                ans[0] = level + 1;
-                ans[1] = root.left.val;
+            if (level + 1 > arr[0]) {
+                // update the arr
+                arr[0] = level + 1;
+                arr[1] = root.left.val;
             }
-            DFS(root.left, ans, level + 1);
+            // keep processing the subproblem in the left subTree
+            dfs(level + 1, root.left);
         }
-
-        // check right subTree
+        // keep processing the subproblem in the right subTree
         if (root.right != null) {
-            DFS(root.right, ans, level + 1);
+            dfs(level + 1, root.right);
         }
 
-        // only if the current node has processed the left subnode as well as right subnode
-        // check whether we need to get it updated.
-        // if current level larger than previous answer, we should update the res and value.
-        if (level > ans[0]) {
-            ans[0] = level;
-            ans[1] = root.val;
+        // working on the current layer
+        // check the level, compare with arr[0]
+        if (level > arr[0]) {
+            arr[0] = level;
+            arr[1] = root.val;
         }
     }
 
-    // Method1: use BFS with TreeNode variable candidate, int size to control printing order
+    // Method2: use BFS with TreeNode variable candidate, int size to control printing order
     // queue to store treeNode
     // push TreeNode into the queue from right to left, poll from left to right
     private int bfsFindBottomLeftValue(TreeNode root) {
