@@ -26,23 +26,21 @@ Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 
 class Solution {
     public int[][] merge(int[][] intervals) {
-        // so the algo is to use a linked List to compare previous end element
-        // with current first element;
-        // if preEnd >= curStart
-        // make sure to use the larger one preEnd, curEnd
-        // else ---> add the current one to the linkedList
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-        LinkedList<int[]> list = new LinkedList<>();
-        list.add(intervals[0]);
+        // Sort the intervals based on the start time
+        // LinkedList as the output ---> return res.toArray(new int[res.size()][]);
+        // Condition check if res.getLast()[1] >= curInterval[0];
+        LinkedList<int[]> res = new LinkedList<>();
+        Arrays.sort(intervals, (a, b) -> (a[0] - b[0]));
+        // add the first one into the result
+        res.add(intervals[0]);
         for (int i = 1; i < intervals.length; i++) {
             int[] curInterval = intervals[i];
-            int preLastEle = list.get(list.size() - 1)[1];
-            if (list.getLast()[1] >= curInterval[0]) {
-                list.getLast()[1] = Math.max(list.getLast()[1], curInterval[1]);
+            if (res.getLast()[1] >= curInterval[0]) {
+                res.getLast()[1] = Math.max(res.getLast()[1], curInterval[1]);
             } else {
-                list.add(curInterval);
+                res.add(curInterval);
             }
         }
-        return list.toArray(new int[list.size()][]);
+        return res.toArray(new int[res.size()][]);
     }
 }
