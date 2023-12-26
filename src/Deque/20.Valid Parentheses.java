@@ -30,30 +30,40 @@ Output: false
 // return stack.isEmpty();
 
 class Solution {
-    private static Map<Character, Character> map = new HashMap<>();
+    Map<Character, Character> dict = new HashMap<>();
 
     public boolean isValid(String s) {
-        map.put(']', '[');
-        map.put(')', '(');
-        map.put('}', '{');
-        // then use a stack to only store the left bracket
-        // cuz once it meets the right bracket, we would like to check if they can paired
-        // if so just pop it out or just return false;
-        // we never store right bracket into the stack only store left Bracket into the stack.
+        // use a stack and only add the left bracket into the stack
+        // if we met the right brack, check the stack first
+        // case1: if it is not empty, 
+        // case1.1: we should check if the there is a match, if so, pop it out
+        // case1.2: if there is not a match, we should return false.
+        // case2: if the stack is empty, return false;
         Deque<Character> stack = new ArrayDeque<>();
+        dict.put('(', ')');
+        dict.put('[', ']');
+        dict.put('{', '}');
         for (int i = 0; i < s.length(); i++) {
-            char curChar = s.charAt(i);
-            // the current curChar is right bracket, it must be paired or return false;
-            if (map.containsKey(curChar)) {
-                char firstCharInStack = stack.isEmpty() ? '#' : stack.peekFirst();
-                if (map.get(curChar) == firstCharInStack) {
-                    stack.pollFirst();
-                }
-                else{
+            char c = s.charAt(i);
+            // case1:
+            // if it is the left bracket, we should push it into the stack
+            if (dict.containsKey(c)) {
+                stack.offerLast(c);
+            } 
+            // case2:
+            // if it is the right bracket, check the status of stack.
+            else {
+                // case2.1: the stack is empty, which means the right bracket is in front of left bracket, which is not acceptable.
+                if (stack.isEmpty()) {
                     return false;
+                } 
+                // case2.2: the stack is NOT empty, pollLast() out and check if there is a match.
+                else {
+                    char preChar = stack.pollLast();
+                    if (dict.get(preChar) != c) {
+                        return false;
+                    }
                 }
-            } else {
-                stack.offerFirst(curChar);
             }
         }
         return stack.isEmpty();
