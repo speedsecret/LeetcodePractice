@@ -92,6 +92,57 @@ class Solution {
         return resultHead;
     }
 
+    // Dec 25th, 2023
+    /*
+    class Solution {
+    public Node copyRandomList(Node head) {
+        // !edge case check!
+        if (head == null) {
+            return head;
+        }
+        // we need to create a new set of nodes
+        // which could started with the newNode
+
+        // then we can basically copy whatever the original nodes could have
+        // then split the linkedList into two, re-chain them and then to concatenate them
+        
+        // then to return the copied node(linkedList)
+        
+        // step1: create the copyNode, which copy the value of the orginal nodes, leave the random nodes aside.
+        Node copyNode = head;
+        while (copyNode != null) {
+            Node newNode = new Node(copyNode.val);
+            newNode.next = copyNode.next;
+            copyNode.next = newNode;
+            copyNode = newNode.next;
+        }
+
+        // step2: create and copy the relationship of the random nodes
+        copyNode = head;
+        while (copyNode != null) {
+            if (copyNode.random != null) {
+                copyNode.next.random = copyNode.random.next;
+            }
+            copyNode = copyNode.next.next;
+        }
+
+        // step3: break the adjusted chain nodes
+        copyNode = head;
+        Node newNode = copyNode.next;
+        Node result = newNode;
+        while (copyNode != null) {
+            copyNode.next = copyNode.next.next;
+            if (newNode.next != null) {
+                newNode.next = newNode.next.next;
+                newNode = newNode.next;
+            }
+            copyNode = copyNode.next;
+        }
+        return result;
+     }
+    }
+    */
+
     // Method1: Intuition:
     // Use the HashMap to store Node, creating nodes while looping the LinkedList head
     // we will create a clone of linked List Nodes.
