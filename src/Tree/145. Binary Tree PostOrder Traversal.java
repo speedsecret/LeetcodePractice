@@ -52,27 +52,26 @@ class Solution {
     // whoever needs to be placed at the end of the list, this should be polled out first
     // anyone who needs to be polled first, in iterative loop, we need to push them into stack late.
     public List<Integer> postorderTraversal(TreeNode root) {
-        LinkedList<Integer> output = new LinkedList<>();
-        Deque<TreeNode> stack = new ArrayDeque<>();
-        
+        LinkedList<Integer> res = new LinkedList<>();
         if (root == null) {
-            return output;
+            return res;
         }
-        // initilization
-        stack.offerFirst(root);
-
+        Deque<TreeNode> stack = new ArrayDeque<>();
+        stack.offerLast(root);
         while (!stack.isEmpty()) {
-            root = stack.pollFirst();
-            output.addFirst(root.val);
-            if (root.left != null) {
-                stack.offerFirst(root.left);
+            TreeNode cur = stack.pollLast();
+            res.addFirst(cur.val);
+            // if you want to poll element out first
+            // you should push this element last
+            // but we are applying a addFirst API()
+            // so we should push the firstly polled element early into the stack.
+            if (cur.left != null) {
+                stack.offerLast(cur.left);
             }
-            if (root.right != null) {
-                stack.offerFirst(root.right);
+            if (cur.right != null) {
+                stack.offerLast(cur.right);
             }
         }
-
-        return output;
+        return res;
     }
 }
-  
