@@ -60,10 +60,12 @@ class MyHashMap {
         // the ListNode array can contain size length of listNodes.
         data = new ListNode[size];
     }
-    
+
     public void put(int key, int value) {
         remove(key);
         int h = hash(key);
+        // always creating a new ListNode
+        // and chaining it to the head of the ListNode
         ListNode newNode = new ListNode(key, value, data[h]);
         data[h] = newNode;
     }
