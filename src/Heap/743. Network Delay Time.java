@@ -36,44 +36,49 @@ All the pairs (ui, vi) are unique. (i.e., no multiple edges.)
 // Using MinHeap to keep track the current point, the travel time needed from start point to end point.
 // Creating an adjMap to store the direct graph.
 
+// it is important to combine the question with course schedule I and course schedule II question.
+// also, compare this question to Leetcode 815 bus routes.
+// https://leetcode.com/problems/bus-routes/description/
+
 class Solution {
     public int networkDelayTime(int[][] times, int n, int k) {
+        // use a PriorityQueue with a BFS to traverse all its neighbors when we processing pq.
+        // traverse the whole int[][] times, and keep them in a hashMap
+        // hashMap is an adjMap: Map<Integer, List<Integer>>
         Map<Integer, List<int[]>> adjMap = new HashMap<>();
-        for (int i = 0; i < times.length; i++) {
-            int[] time = times[i];
+        for (int[] time : times) {
             int src = time[0];
             int dest = time[1];
             int travelTime = time[2];
-            adjMap.computeIfAbsent(src, key -> new ArrayList<>()).add(new int[]{dest, travelTime});
-        }      
+            adjMap.computeIfAbsent(src, a -> new ArrayList<>()).add(new int[]{dest, travelTime});
+        }
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+        minHeap.add(new int[]{k, 0});
 
-        // create an array
         int[] signalArray = new int[n + 1];
         Arrays.fill(signalArray, Integer.MAX_VALUE);
         signalArray[k] = 0;
 
-        // create a minHeap to store each possible travel State
-        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
-        minHeap.add(new int[]{k, 0});
         while (!minHeap.isEmpty()) {
-            int[] preState = minHeap.poll();
-            int preNode = preState[0];
-            int preTravelTime = preState[1];
-
+            int[] preNodeArr = minHeap.poll();
+            int preNode = preNodeArr[0];
+            int preTravelTime = preNodeArr[1];
             if (signalArray[preNode] < preTravelTime || !adjMap.containsKey(preNode)) {
                 continue;
             }
 
-            // check the preNode's neighbor
+            // it is essentially the same thing like up/down/left/right directions.
             for (int[] nei : adjMap.get(preNode)) {
                 int neiNode = nei[0];
-                int neiTravelTime = nei[1];
-                if (signalArray[preNode] + neiTravelTime < signalArray[neiNode]) {
-                    signalArray[neiNode] = signalArray[preNode] + neiTravelTime;
+                int neiTime = nei[1];
+                // we found a new solution by using the neighbor as a bridge to its curret neiNode
+                if (neiTime + signalArray[preNode] < signalArray[neiNode]){
+                    signalArray[neiNode] = neiTime + signalArray[preNode];
                     minHeap.add(new int[]{neiNode, signalArray[neiNode]});
                 }
             }
         }
+
         int answer = Integer.MIN_VALUE;
         for (int i = 1; i <= n; i++) {
             answer = Math.max(signalArray[i], answer);
