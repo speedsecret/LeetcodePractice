@@ -37,60 +37,57 @@ sum(routes[i].length) <= 105
 
 class Solution {
     public int numBusesToDestination(int[][] routes, int source, int target) {
-        // undirected map
-        // use a List<Integer>[] to store the relationship
-        // to achieve this, create an int variable maxStation to determine the size
-        // of the array
-        
-        // edge case check
+        // check the edge case, the srouce is the target
+        // so the passenger doesn't even need to onboard the bus
         if (source == target) {
             return 0;
         }
 
-        int max = 0;
-        for (int i = 0; i < routes.length; i++) {
-            // the limit of j is routes[i].length instead of routes[0].length;
-            // !!!this is not a matrix!!!
-            for (int j = 0; j < routes[i].length; j++) {
-                max = Math.max(routes[i][j], max);
-            }
-        }
-        List<Integer>[] stationsToRoutes = new ArrayList[max + 1];
-        // construct the stationsArray
+        // Redundancy optimization 
+        int maxStation = 0;
         for (int i = 0; i < routes.length; i++) {
             for (int j = 0; j < routes[i].length; j++) {
-                int curBusStop = routes[i][j];
-                if (stationsToRoutes[curBusStop] == null) {
-                    stationsToRoutes[curBusStop] = new ArrayList<>();
-                }
-                // to do, why we need to add i?    
-                stationsToRoutes[curBusStop].add(i);
+                maxStation = Math.max(maxStation, routes[i][j]);
             }
         }
 
-        // BFS
+        List<Integer>[] stationToRoutes = new ArrayList[maxStation + 1];
+
+        // built up the stationToRoutes array
+        for (int i = 0; i < routes.length; i++) {
+            for (int j = 0; j < routes[i].length; j++) {
+                int curStation = routes[i][j];
+                if (stationToRoutes[curStation] == null) {
+                    stationToRoutes[curStation] = new ArrayList<>();
+                }
+                stationToRoutes[curStation].add(i);
+            }
+        }
+
+        // create an output int[] array for storing results.
+        int[] result = new int[maxStation + 1];
         Deque<Integer> queue = new ArrayDeque<>();
         Set<Integer> visited = new HashSet<>();
 
-        int[] result = new int[max + 1];
         queue.offerLast(source);
-
         while (!queue.isEmpty()) {
             int curStation = queue.pollFirst();
-            for (int busRoute : stationsToRoutes[curStation]) {
-                // check if neiStation has been visited
+            for (int busRoute : stationToRoutes[curStation]) {
+                // if the busRoute never check before
                 if (!visited.contains(busRoute)) {
-                    // inner cycle is here.
-                    // it would need to traverse all bus stops by using neiBus
-                    for (int station : routes[busRoute]) {
-                        if (station == curStation) {
+                    for (int neiStation : routes[busRoute]) {
+                        // case1: neiStation is curStation
+                        if (neiStation == curStation) {
                             continue;
                         }
-                        if (result[station] == 0) {
-                            result[station] = result[curStation] + 1;
-                            queue.offerLast(station);
+                        // case2: there isn't any routes available in the current neiStation
+                        if (result[neiStation] == 0) {
+                            result[neiStation] = result[curStation] + 1;
+                            queue.offerLast(neiStation);
                         }
-                        if (station == target) {
+                        // case3: the neiStation equals to target
+                        // we found the destination
+                        if (neiStation == target) {
                             return result[target];
                         }
                     }
