@@ -54,6 +54,7 @@ class Solution {
         List<Integer>[] stationToRoutes = new ArrayList[maxStation + 1];
 
         // built up the stationToRoutes array
+        // this is can also be replaced by the hashMap
         for (int i = 0; i < routes.length; i++) {
             for (int j = 0; j < routes[i].length; j++) {
                 int curStation = routes[i][j];
@@ -72,15 +73,15 @@ class Solution {
         queue.offerLast(source);
         while (!queue.isEmpty()) {
             int curStation = queue.pollFirst();
-            for (int busRoute : stationToRoutes[curStation]) {
-                // if the busRoute never check before
-                if (!visited.contains(busRoute)) {
-                    for (int neiStation : routes[busRoute]) {
+            for (int route : stationToRoutes[curStation]) {
+                // if the route never check before
+                if (!visited.contains(route)) {
+                    for (int neiStation : routes[route]) {
                         // case1: neiStation is curStation
                         if (neiStation == curStation) {
                             continue;
                         }
-                        // case2: there isn't any routes available in the current neiStation
+                        // case2: keep iterating, there isn't any routes available in the current neiStation
                         if (result[neiStation] == 0) {
                             result[neiStation] = result[curStation] + 1;
                             queue.offerLast(neiStation);
