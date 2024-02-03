@@ -37,21 +37,17 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 
 class Solution {
     public int maxSubArray(int[] nums) {
-        // Initialize variables to keep track of the maximum sum and the current sum
-        int maxSum = nums[0]; // Assume the maximum sum is the first element
-        int curSum = 0; // Initialize the current sum to 0
-
-        // Loop through the array to find the maximum subarray sum
-        for (int i = 0; i < nums.length; i++) {
-            // The current sum is either the current element itself (starting a new subarray)
-            // or the sum of the current element and the current sum (extending the subarray)
-            curSum = Math.max(nums[i], curSum + nums[i]);
-
-            // Update the maximum sum if the current sum is greater
-            maxSum = Math.max(curSum, maxSum);
+        int curMax = nums[0], globalMax = nums[0];
+        // index starts from i = 1;
+        for (int i = 1; i < nums.length; i++) {
+            // nums[i] represent we start it over
+            // nums[i] + curMax means we would concatenate it from last member.
+            curMax = Math.max(nums[i] + curMax, nums[i]);
+            globalMax = Math.max(curMax, globalMax);
         }
-        // Return the maximum sum found
-        return maxSum;
+        return globalMax;
+    }
+}
 
         // Method 2:
         // use divide and conquer
