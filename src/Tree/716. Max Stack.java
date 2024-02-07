@@ -35,87 +35,90 @@ stk.pop();     // return 1, [5] the top of the stack and the max element is now 
 stk.top();     // return 5, [5] the stack did not change.
 */
 
-class MaxStack {
-    DoubleLinkedList head;
-    DoubleLinkedList tail;
-    TreeMap<Integer, List<DoubleLinkedList>> treeMap;
+// Mindset:
+// Key Concepts: TreeMap, DoublyLinkedListNode
+// So we need to use a TreeMap to leverage the natural ordering attribute, represent as a maxStack.
+// Besides, instead of using integer to store the element
+// Introducing a new class which is called DoublyLinkedListNode
+// which store the value and its ordering status, represent as a stack.
 
-    public MaxStack() {
-        head = new DoubleLinkedList(0);
-        tail = new DoubleLinkedList(0);
-        tail.prev = head;
-        head.next = tail;
-        treeMap = new TreeMap<>();
-    }
-
-    public void push(int x) {
-        DoubleLinkedList newNode = new DoubleLinkedList(x);
-        
-        addNode(newNode);
-
-        // check if x has already showed up before
-        if (!treeMap.containsKey(x)) {
-            treeMap.put(x, new ArrayList<DoubleLinkedList>());
-        }
-        // add the element into the end of the linkedList within the treeMap
-        treeMap.get(x).add(newNode);
-    }
-
-    public int pop() {
-        int res = head.next.value;
-        List<DoubleLinkedList> targetList = treeMap.get(res);
-        // remove the element in the TreeMap
-        DoubleLinkedList node = targetList.remove(targetList.size() - 1);
-        if (targetList.isEmpty()) {
-            treeMap.remove(res);
-        }
-
-        // remove the node from the head
-        head.next.next.prev = head;
-        head.next = head.next.next;
-        return res;
-    }
-
-    public int top() {
-        int res = head.next.value;
-        return res;
-    }
-
-    public int peekMax() {
-        return treeMap.lastKey();
-    }
-
-    public int popMax() {
-        int max = treeMap.lastKey();
-        List<DoubleLinkedList> targetList = treeMap.get(max);
-        // remove the element in the treeMap
-        DoubleLinkedList node = targetList.remove(targetList.size() - 1);
-        if (targetList.isEmpty()) {
-            treeMap.remove(max);
-        }
-
-        // remove the node from where the popMax node located
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-        return max;
-    }
-
-    // addNode process
-    private void addNode(DoubleLinkedList newNode) {
-        head.next.prev = newNode;
-        newNode.prev = head;
-        newNode.next = head.next;
-        head.next = newNode;
+class DoublyLinkedListNode {
+    int value;
+    DoublyLinkedListNode prev;
+    DoublyLinkedListNode next;
+    public DoublyLinkedListNode(int value) {
+        this.value = value;
     }
 }
 
-class DoubleLinkedList {
-    // there doesn't exist a key
-    int value;
-    DoubleLinkedList next;
-    DoubleLinkedList prev;
-    public DoubleLinkedList(int value) {
-        this.value = value;
+class MaxStack {
+    TreeMap<Integer, List<DoublyLinkedListNode>> treeMap = new TreeMap<>();
+    DoublyLinkedListNode head;
+    DoublyLinkedListNode tail;
+
+    public MaxStack() {
+        head = new DoublyLinkedListNode(0);
+        tail = new DoublyLinkedListNode(0);
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public void push(int x) {
+        DoublyLinkedListNode node = new DoublyLinkedListNode(x);
+        addNode(node);
+
+        treeMap.computeIfAbsent(x, key -> new ArrayList<>()).add(node);
+        // if (!treeMap.containsKey(x)) {
+        //     treeMap.put(x, new ArrayList<>());
+        // }
+        // treeMap.get(x).add(node);
+    }
+    
+    public int pop() {
+        int popKey = head.next.value;
+        DoublyLinkedListNode node = head.next;
+
+        // removeNode from the DoublyLinkedListNode
+        head.next.next.prev = head;
+        head.next = node.next;
+
+        // remove node in TreeMap
+        List<DoublyLinkedListNode> list = treeMap.get(popKey);
+        list.remove(list.size() - 1);
+        if (list.isEmpty()) {
+            treeMap.remove(popKey);
+        }
+        return popKey;
+    }
+    
+    public int top() {
+        return head.next.value;
+    }
+    
+    public int peekMax() {
+        return treeMap.lastKey();
+    }
+    
+    public int popMax() {
+        int max = treeMap.lastKey();
+        List<DoublyLinkedListNode> list = treeMap.get(max);
+        DoublyLinkedListNode node = list.remove(list.size() - 1);
+        if (list.isEmpty()) {
+            treeMap.remove(max);
+        }
+
+        // remove the node
+        node.next.prev = node.prev;
+        node.prev.next = node.next;
+        return max;
+    }
+
+    private void addNode(DoublyLinkedListNode node) {
+        // add the node just after the head
+        head.next.prev = node;
+        node.next = head.next;
+        node.prev = head;
+        head.next = node;
     }
 }
 
