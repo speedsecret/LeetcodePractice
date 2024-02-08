@@ -55,4 +55,36 @@ class Solution {
     }
 }
 
+/*
+// Feb.07.2024
+// My hashMap method approach, while I believe the highlight one is better from clean code perspective.
+// Mindset:
+// Use a hashMap to store a entry as <Integer, Integer>
+// and named it as counts;
+
+// Use a linear time complexity to process the nums array
+// maintain an int globalRes
+// to check how many subArray we already have is equals to (sum - k)
+// if the result is larger than 0
+// add it into a global variable globalRes
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        Map<Integer, Integer> count = new HashMap<>();
+        // we know there is always the sum of the subarray equals to 0.
+        count.put(0, 1);
+        int globalRes = 0, prefixSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            prefixSum += nums[i];
+            Integer curRes = count.get(prefixSum - k);
+            if (curRes != null) {
+                globalRes += curRes;
+            }
+            count.put(prefixSum, count.getOrDefault(prefixSum, 0) + 1);
+        }
+        return globalRes;
+    }
+}
+*/
+
 
