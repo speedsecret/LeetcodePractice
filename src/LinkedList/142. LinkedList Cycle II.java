@@ -65,7 +65,7 @@ public class Solution {
             return null;
         }
         // check if there is a cycle
-        // re-calibrate the fast node
+        // re-set the fast node
         fast = head;
         while (fast != slow) {
             fast = fast.next;
