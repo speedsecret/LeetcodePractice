@@ -44,7 +44,7 @@ class Solution {
         }
         
         // Call DFS
-        dfs(result, map, 0, new char[s.length()], 0, s.length()-1);
+        dfs(result, map, 0, new char[s.length()], 0, s.length() - 1);
 
         // return result
         return result;
@@ -77,19 +77,18 @@ class Solution {
                 dfs(result, used, totalUsed + 2, curr, i + 1, j - 1);
                 // unmark values as used
                 used[c - 'a'] = count;
-            } else if(count == 1) {
-                // If the used key == 1
-                // We know for a fact the only place we can use this character is in the middle.
-                if (i == j) {
-                    // Set the value in the middle
-                    curr[i] = c;
-                    // Mark as used
-                    used[c - 'a']--;
-                    // Recurse
-                    dfs(result, used, totalUsed + 1, curr, i + 1, j - 1);
-                    // Unmark and reset count
-                    used[c - 'a'] = count;
-                }
+            } 
+            // If the used key == 1
+            // We know for a fact the only place we can use this character is in the middle.    
+            else if (count == 1 && i == j) {
+                // Set the value in the middle
+                curr[i] = c;
+                // Mark as used
+                used[c - 'a']--;
+                // Recurse
+                dfs(result, used, totalUsed + 1, curr, i + 1, j - 1);
+                // Unmark and reset count
+                used[c - 'a'] = count;
             }
         }
     }
